@@ -12,4 +12,6 @@
     <dimen name="margin_8">8dp</dimen>
     <dimen name="margin_15">15dp</dimen>
     <dimen name="margin_30">30dp</dimen>
+
+    <dimen name="profile_img">100dp</dimen>
 </resources>
