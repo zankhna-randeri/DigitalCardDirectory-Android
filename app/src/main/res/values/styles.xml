@@ -11,7 +11,7 @@
         <item name="android:fontFamily">@font/app_font</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@android:color/black</item>
-        <item name="android:textSize">@dimen/font_24</item>
+        <item name="android:textSize">@dimen/font_22</item>
     </style>
 
     <style name="ButtonTheme" parent="Theme.AppCompat">
