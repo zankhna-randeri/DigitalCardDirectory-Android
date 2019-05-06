@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="font_small">18sp</dimen>
+    <dimen name="font_20">20sp</dimen>
+    <dimen name="font_24">24sp</dimen>
+    <dimen name="font_name_initial">54sp</dimen>
+
+    <dimen name="padding_5">12dp</dimen>
+    <dimen name="padding_8">8dp</dimen>
+    <dimen name="padding_20">20dp</dimen>
+
+    <dimen name="margin_8">8dp</dimen>
+    <dimen name="margin_15">15dp</dimen>
+    <dimen name="margin_30">30dp</dimen>
+</resources>
