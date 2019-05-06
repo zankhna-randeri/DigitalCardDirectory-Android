@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".CardDetailActivity">
 
     <include
         layout="@layout/toolbar_app"
@@ -13,38 +13,35 @@
         android:layout_alignParentTop="true" />
 
     <RelativeLayout
-        android:padding="@dimen/padding_5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar">
+        android:layout_below="@id/toolbar"
+        android:padding="@dimen/padding_5">
 
         <TextView
             android:id="@+id/img_user"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="#eaeaea"
-            android:textColor="#9b9999"
-            android:text="JD"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize=""
-            android:textAllCaps="true"
             android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true" />
+            android:layout_alignParentLeft="true"
+            android:background="#eaeaea"
+            android:gravity="center"
+            android:text="JD"
+            android:textAllCaps="true"
+            android:textColor="#9b9999"
+            android:textSize="@dimen/font_name_initial"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/txt_name"
+            style="@style/TextDetailTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/img_user"
             android:layout_toRightOf="@id/img_user"
             android:padding="@dimen/padding_8"
             android:text="John Doe"
-            android:textAllCaps="false"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/font_20"
-            android:textStyle="bold"
-            app:fontFamily="@font/app_font" />
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
