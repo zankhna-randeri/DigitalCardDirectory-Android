@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:app="http://schemas.android.com/apk/res-auto">
+    <font
+        app:font="@font/avenir_roman"
+        app:fontStyle="normal"
+        app:fontWeight="400" />
+
+    <!--normal = 400
+    bold = 700
+    bolder = relative to 700
+    lighter-->
+</font-family>
