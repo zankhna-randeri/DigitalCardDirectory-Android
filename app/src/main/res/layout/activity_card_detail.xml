@@ -20,8 +20,8 @@
 
         <TextView
             android:id="@+id/img_user"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/profile_img"
+            android:layout_height="@dimen/profile_img"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:background="#eaeaea"
@@ -34,14 +34,21 @@
 
         <TextView
             android:id="@+id/txt_name"
-            style="@style/TextDetailTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/img_user"
             android:layout_toRightOf="@id/img_user"
             android:padding="@dimen/padding_8"
             android:text="John Doe"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:theme="@style/TextDetailTheme" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Click me"
+            android:theme="@style/ButtonTheme" />
 
     </RelativeLayout>
 
