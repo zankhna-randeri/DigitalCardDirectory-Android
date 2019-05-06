@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 public class CardDetailActivity extends AppCompatActivity {
@@ -20,6 +21,18 @@ public class CardDetailActivity extends AppCompatActivity {
         initView();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                return false;
+        }
+        return false;
+    }
+
     private void initView() {
         toolbar = findViewById(R.id.toolbar);
         title = findViewById(R.id.toolbar_title);
@@ -32,6 +45,6 @@ public class CardDetailActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        title.setText(getString(R.string.app_name));
+        title.setText(getString(R.string.txt_card_detail));
     }
 }
