@@ -6,7 +6,7 @@
     <dimen name="font_24">24sp</dimen>
     <dimen name="font_name_initial">54sp</dimen>
 
-    <dimen name="padding_5">12dp</dimen>
+    <dimen name="padding_5">5dp</dimen>
     <dimen name="padding_8">8dp</dimen>
     <dimen name="padding_20">20dp</dimen>
 
@@ -16,4 +16,11 @@
 
     <dimen name="stroke_width">2dp</dimen>
     <dimen name="profile_img">80dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

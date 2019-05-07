@@ -9,4 +9,6 @@
     <color name="colorWhite">#ffffff</color>
     <color name="colorBlack">#000000</color>
     <color name="colorYellow">#F8E546</color>
+    <color name="end_color">#3949AB</color>
+    <color name="center_color">#3F51B5</color>
 </resources>
