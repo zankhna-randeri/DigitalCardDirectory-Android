@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:padding="8dip"
+    >
+
+    <Space
+        android:layout_width="1dp"
+        android:layout_height="100dp"/>
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="330dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:background="@color/colorWhite">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="41dp"
+            android:text=""
+            android:textColor="@color/colorBlack"
+            android:textSize="25dp" />
+
+        <EditText
+            android:id="@+id/firstName"
+            android:layout_width="300dp"
+            android:layout_height="75dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:backgroundTint="@color/colorBlack"
+            android:hint="Enter First Name" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="330dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:background="@color/colorWhite">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="41dp"
+            android:text=""
+            android:textColor="@color/colorBlack"
+            android:textSize="25dp" />
+
+        <EditText
+            android:id="@+id/lastName"
+            android:layout_width="300dp"
+            android:layout_height="75dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:backgroundTint="@color/colorBlack"
+            android:hint="Enter Last Name" />
+
+    </RelativeLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="330dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:background="@color/colorWhite">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="61dp"
+            android:text=""
+            android:textColor="@color/colorBlack"
+            android:textSize="25dp" />
+
+        <EditText
+            android:id="@+id/emailId"
+            android:layout_width="300dp"
+            android:layout_height="75dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:backgroundTint="@color/colorBlack"
+            android:hint="Enter Email Id" />
+
+    </RelativeLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="330dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:background="@color/colorWhite">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="53dp"
+            android:text=""
+            android:textColor="@color/colorBlack"
+            android:textSize="25dp" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="300dp"
+            android:layout_height="75dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:backgroundTint="@color/colorBlack"
+            android:inputType="textPassword"
+            android:hint="Password" />
+    </RelativeLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="330dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:background="@color/colorWhite">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp"
+            android:text=""
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/confirmPassword"
+            android:layout_width="300dp"
+            android:layout_height="75dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:backgroundTint="@color/colorBlack"
+            android:inputType="textPassword"
+            android:hint="Re-Type Password" />
+    </RelativeLayout>
+
+    <Space
+        android:layout_width="1dp"
+        android:layout_height="20dp"/>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/signupSubmit"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="35dp"
+            android:onClick="saveCustomerDetails"
+            android:text="@string/submit"
+            android:background="@drawable/mybutton"
+            android:textColor="@color/colorWhite"
+            android:textSize="25dp" />
+
+        <Button
+            android:id="@+id/signupCancel"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="35dp"
+            android:onClick="signupCancel"
+            android:text="@string/cancel"
+            android:background="@drawable/mybutton_red"
+            android:textColor="@color/colorWhite"
+            android:textSize="25dp" />
+    </RelativeLayout>
+
+</LinearLayout>

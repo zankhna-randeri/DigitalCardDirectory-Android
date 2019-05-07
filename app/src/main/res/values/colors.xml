@@ -6,4 +6,7 @@
     <color name="color_bg_initials">#eaeaea</color>
     <color name="color_text_initial">#9b9999</color>
     <color name="color_button_select">#5C6BC0</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorYellow">#F8E546</color>
 </resources>
