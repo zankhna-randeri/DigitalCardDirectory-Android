@@ -14,5 +14,6 @@
     <dimen name="margin_15">15dp</dimen>
     <dimen name="margin_30">30dp</dimen>
 
-    <dimen name="profile_img">100dp</dimen>
+    <dimen name="stroke_width">2dp</dimen>
+    <dimen name="profile_img">80dp</dimen>
 </resources>
