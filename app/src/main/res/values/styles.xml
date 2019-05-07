@@ -22,4 +22,12 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/font_24</item>
     </style>
+
+    <style name="TabButtonTheme" parent="android:Widget.Button">
+        <item name="android:background">@drawable/app_button_selector</item>
+        <item name="android:fontFamily">@font/app_font</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/font_22</item>
+    </style>
 </resources>
