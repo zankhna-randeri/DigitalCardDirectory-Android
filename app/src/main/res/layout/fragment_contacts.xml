@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragment.ContactsFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_phone"
+        android:textAllCaps="true"
+        android:textColor="@color/color_text_initial"
+        android:textSize="@dimen/font_20"
+        app:fontFamily="@font/app_font" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:padding="@dimen/padding_5">
+
+        <TextView
+            android:id="@+id/txt_phone_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="+1-000-334-2323"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/font_20"
+            app:fontFamily="@font/app_font" />
+
+        <ImageButton
+            android:id="@+id/btn_call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:src="@drawable/ic_call" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_15"
+        android:text="@string/txt_email"
+        android:textAllCaps="true"
+        android:textColor="@color/color_text_initial"
+        android:textSize="@dimen/font_20"
+        app:fontFamily="@font/app_font" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:padding="@dimen/padding_5">
+
+        <TextView
+            android:id="@+id/txt_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="abby@gmail.com"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/font_20"
+            app:fontFamily="@font/app_font" />
+
+        <ImageButton
+            android:id="@+id/btn_send_mail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:src="@drawable/ic_email" />
+    </RelativeLayout>
+
+</LinearLayout>

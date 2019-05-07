@@ -9,14 +9,16 @@ public class Card implements Parcelable {
     private String emailId;
     private String phoneNumber;
     private String notes;
+    private String cardName;
 
     public Card(String name, String organization, String emailId,
-                String phoneNumber, String notes) {
+                String phoneNumber, String notes, String cardName) {
         this.name = name;
         this.organization = organization;
         this.emailId = emailId;
         this.phoneNumber = phoneNumber;
         this.notes = notes;
+        this.cardName = cardName;
     }
 
     protected Card(Parcel in) {

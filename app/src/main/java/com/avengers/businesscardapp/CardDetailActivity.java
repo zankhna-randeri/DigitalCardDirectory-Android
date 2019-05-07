@@ -30,6 +30,8 @@ public class CardDetailActivity extends AppCompatActivity implements
     private Button btnContacts;
     private Button btnCard;
     private Button btnNotes;
+    private TextView txtName;
+    private TextView txtOrganization;
 
     private Card card;
 
@@ -40,11 +42,6 @@ public class CardDetailActivity extends AppCompatActivity implements
         mContext = CardDetailActivity.this;
         initView();
         fetchCardDetail(getIntent());
-        Fragment contactsFragment = ContactsFragment.newInstance(
-                new Card("Jhon Deo", "Abby Europe",
-                        "abby@gmail.com", "+1 002-030-3040",
-                        "notes..."));
-        setDefaultFragment(contactsFragment);
     }
 
 
@@ -88,6 +85,8 @@ public class CardDetailActivity extends AppCompatActivity implements
         if (intent.getExtras() != null &&
                 getIntent().getExtras().containsKey(Constants.EXTRA_CARD_DETAIL)) {
             card = getIntent().getExtras().getParcelable(Constants.EXTRA_CARD_DETAIL);
+            txtName.setText(card.getName());
+            txtOrganization.setText(card.getOrganization());
             Fragment contactsFragment = ContactsFragment.newInstance(card);
             setDefaultFragment(contactsFragment);
         }
@@ -99,6 +98,8 @@ public class CardDetailActivity extends AppCompatActivity implements
         btnCard = findViewById(R.id.btn_card);
         btnContacts = findViewById(R.id.btn_contacts);
         btnNotes = findViewById(R.id.btn_notes);
+        txtName = findViewById(R.id.txt_name);
+        txtOrganization = findViewById(R.id.txt_org);
         setUpToolbar();
         btnNotes.setOnClickListener(this);
         btnContacts.setOnClickListener(this);
@@ -109,19 +110,24 @@ public class CardDetailActivity extends AppCompatActivity implements
         setSelected(btnCard);
         deselectButton(btnNotes);
         deselectButton(btnContacts);
-
+        Fragment contactsFragment = ContactsFragment.newInstance(card);
+        replaceFragment(contactsFragment);
     }
 
     private void handleContactsClick() {
         setSelected(btnContacts);
         deselectButton(btnCard);
         deselectButton(btnNotes);
+        Fragment contactsFragment = ContactsFragment.newInstance(card);
+        replaceFragment(contactsFragment);
     }
 
     private void handleNotesClick() {
         setSelected(btnNotes);
         deselectButton(btnContacts);
-        deselectButton(btnNotes);
+        deselectButton(btnCard);
+        Fragment contactsFragment = ContactsFragment.newInstance(card);
+        replaceFragment(contactsFragment);
     }
 
     private void deselectButton(Button tabButton) {
