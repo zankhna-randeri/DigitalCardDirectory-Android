@@ -17,4 +17,12 @@
     <string name="password_match">Passowrds Doesnt match</string>
     <string name="login_validation">Email Id and Password doesnt match. Please verify your credentials</string>
     <string name="no_customer_record">No record with this Email. Please signup</string>
+
+    <string name="title_activity_navigtion">NavigtionActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
 </resources>
