@@ -17,9 +17,22 @@ public class DataControllerBusinessCard {
     public static final String PASSWORD = "Password";
     public static final String TABLE_NAME = "Customer_Info";
     public static final String DATABASE_NAME = "BusinessCard.db";
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 7;
     public static final String TABLE_CREATE = "create table Customer_Info (FirstName text not null, " +
             " LastName text not null, EmailId text not null, Password text not null)";
+
+    //logic to add business card information to the DB
+    public static final String CONTACT_NAME="ContactName";
+    public static final String CONTACT_ORGANIZATION="ContactOrganization";
+    public static final String CONTACT_EMAIL="ContactEmail";
+    public static final String CONTACT_NUMBER="ContactNUmber";
+    public static final String USER_EMAIL="UserEmail";
+    public static final String FILE_NAME="FileName";
+    public static final String TABLE_NAME_CONTACT="Contact_Info";
+    public static final String TABLE_CREATE_CONTACT="create table Contact_Info (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "UserEmail text not null, " +
+            " CONTACT_NAME text not null, ContactOrganization text not null, CONTACT_EMAIL text not null," +
+            " CONTACT_NUMBER text not null, FILE_NAME text not null)";
 
     DataBaseHelper dbHelper;
     Context context;
@@ -38,6 +51,31 @@ public class DataControllerBusinessCard {
     public void close() {
         dbHelper.close();
     }
+
+    //Logic to add the contact Info to the DB and retrieve it from the DB
+    public long insertContactInfo(String userEmail, String contactName, String contactOrg, String contactEmail,
+                                  String contactNumber, String fileName)
+    {
+        ContentValues content=new ContentValues();
+        content.put(USER_EMAIL, userEmail);
+        content.put(CONTACT_NAME, contactName);
+        content.put(CONTACT_ORGANIZATION, contactOrg);
+        content.put(CONTACT_EMAIL, contactEmail);
+        content.put(CONTACT_NUMBER, contactNumber);
+        content.put(FILE_NAME, fileName);
+        return db.insertOrThrow(TABLE_NAME_CONTACT, null, content);
+    }
+
+    public Cursor retrieveContactInfo(String userEmail, Integer ID)
+    {
+        String query = "SELECT * FROM Contact_Info WHERE UserEmail='" +userEmail+"'" + " AND ID=" + ID;
+        db = dbHelper.getReadableDatabase();
+        Cursor  cursor = db.rawQuery(query,null);
+
+        return cursor;
+    }
+
+//END
 
     //method call to insert User records to the db
     public long insert(String firstName, String lastName, String emailId, String password) {
@@ -81,6 +119,7 @@ public class DataControllerBusinessCard {
         public void onCreate(SQLiteDatabase db) {
             try {
                 db.execSQL(TABLE_CREATE);
+                db.execSQL(TABLE_CREATE_CONTACT);
             } catch (SQLiteException e) {
                 e.printStackTrace();
             }
@@ -90,6 +129,7 @@ public class DataControllerBusinessCard {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             // TODO Auto-generated method stub
             db.execSQL("DROP TABLE IF EXISTS Customer_Info");
+            db.execSQL("DROP TABLE IF EXISTS Contact_Info");
             onCreate(db);
         }
 
