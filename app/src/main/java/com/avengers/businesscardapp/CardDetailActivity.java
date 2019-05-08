@@ -43,6 +43,8 @@ public class CardDetailActivity extends AppCompatActivity implements
         mContext = CardDetailActivity.this;
         initView();
         fetchCardDetail(getIntent());
+        //TODO : remove below setSelected(btnContact);
+        setSelected(btnContacts);
     }
 
 
@@ -88,9 +90,11 @@ public class CardDetailActivity extends AppCompatActivity implements
             card = getIntent().getExtras().getParcelable(Constants.EXTRA_CARD_DETAIL);
             txtName.setText(card.getName());
             txtOrganization.setText(card.getOrganization());
+            setSelected(btnContacts);
             Fragment contactsFragment = ContactsFragment.newInstance(card);
             setDefaultFragment(contactsFragment);
         }
+
     }
 
     private void initView() {
