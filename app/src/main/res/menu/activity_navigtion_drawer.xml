@@ -9,11 +9,11 @@
             android:icon="@drawable/ic_view_list_black_24dp"
             android:title="Card List" />
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_addCard"
             android:icon="@drawable/ic_add_a_photo_black_24dp"
             android:title="Add Card" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_share"
             android:icon="@drawable/ic_menu_share"
             android:title="Share" />
 
