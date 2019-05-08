@@ -3,7 +3,9 @@ package com.avengers.businesscardapp;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,17 +55,12 @@ public class LoginActivity extends AppCompatActivity {
                     String lastName = cursor.getString(1);
 
                     //Set the email Id and first name and last name in shared preferences
-                   /* ChildCareUtil childCareUtil = new ChildCareUtil();
                     SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
                     SharedPreferences.Editor editor=sharedPreferences.edit();
                     editor.putString("Email_Id", dbMailId);
                     editor.putString("First_Name", firstName);
                     editor.putString("Last_Name", lastName);
-                    editor.putString("Child_Age", childCareUtil.dateConversion(dateOfBirth));
                     editor.commit();
-
-                    Intent intent=new Intent(this,CustomerPage.class);
-                    startActivity(intent);*/
                 } else {
                     Context context = getApplicationContext();
                     CharSequence text = getString(R.string.login_validation);
