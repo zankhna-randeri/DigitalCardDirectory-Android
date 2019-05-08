@@ -11,6 +11,7 @@ public class Card implements Parcelable {
     private String notes;
     private String cardName;
 
+
     public Card(String name, String organization, String emailId,
                 String phoneNumber, String notes, String cardName) {
         this.name = name;
@@ -27,6 +28,7 @@ public class Card implements Parcelable {
         emailId = in.readString();
         phoneNumber = in.readString();
         notes = in.readString();
+        cardName = in.readString();
     }
 
     public static final Creator<Card> CREATOR = new Creator<Card>() {
@@ -40,6 +42,14 @@ public class Card implements Parcelable {
             return new Card[size];
         }
     };
+
+    public String getCardName() {
+        return cardName;
+    }
+
+    public void setCardName(String cardName) {
+        this.cardName = cardName;
+    }
 
     public String getName() {
         return name;
@@ -93,5 +103,6 @@ public class Card implements Parcelable {
         dest.writeString(this.emailId);
         dest.writeString(this.phoneNumber);
         dest.writeString(this.notes);
+        dest.writeString(this.cardName);
     }
 }
