@@ -79,7 +79,6 @@ public class DataControllerBusinessCard {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            // TODO Auto-generated method stub
             try {
                 db.execSQL(TABLE_CREATE);
             } catch (SQLiteException e) {
