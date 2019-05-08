@@ -1,31 +1,27 @@
 package com.avengers.businesscardapp.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.avengers.businesscardapp.R;
-import com.avengers.businesscardapp.dto.Card;
 import com.avengers.businesscardapp.util.NetworkHelper;
 import com.avengers.businesscardapp.webservice.BusinessCardWebservice;
 import com.avengers.businesscardapp.webservice.GenericResponse;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import retrofit2.Call;
 
@@ -39,7 +35,7 @@ public class CardFragment extends Fragment {
     private static final String ARG_CARD_NAME = "arg_card_name";
 
     private ImageView imgCard;
-    private String emailId;
+    private String appUserEmailId;
     private String cardName;
     private OnFragmentInteractionListener mListener;
 
@@ -73,40 +69,15 @@ public class CardFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_card, container, false);
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         imgCard = view.findViewById(R.id.img_card);
         // Get email
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        emailId = sharedPrefs.getString("Email_Id", "");
-        String prefix = fetchDownloadPrefix();
-//        String url = prefix + emailId + cardName;
-//        loadImageFromUrl(url);
-        loadImageFromUrl(prefix);
-    }
-
-    private String fetchDownloadPrefix() {
-        if (NetworkHelper.hasNetworkAccess(getActivity().getApplicationContext())) {
-            BusinessCardWebservice webservice = BusinessCardWebservice
-                    .retrofit.create(BusinessCardWebservice.class);
-            Call<GenericResponse> call = webservice.getCardUrl();
-            try {
-                GenericResponse response = call.execute().body();
-                if (response.getMessage() != null) {
-                    return response.getMessage();
-                } else {
-                    //TODO : Handle other response codes
-                    return null;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.e(TAG, "handleActionRequestQuestion: " + e.getMessage());
-                return null;
-            }
-
-        }
-        return null;
+        appUserEmailId = sharedPrefs.getString("Email_Id", "");
+        new DisplayCardTask(getActivity().getApplicationContext()).execute();
     }
 
 
@@ -133,6 +104,47 @@ public class CardFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private class DisplayCardTask extends AsyncTask<Void, String, String> {
+
+        private Context mContext;
+
+        public DisplayCardTask(Context mContext) {
+            this.mContext = mContext;
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            if (NetworkHelper.hasNetworkAccess(mContext)) {
+                BusinessCardWebservice webservice = BusinessCardWebservice
+                        .retrofit.create(BusinessCardWebservice.class);
+                Call<GenericResponse> call = webservice.getCardUrl();
+                try {
+                    GenericResponse response = call.execute().body();
+                    if (response != null) {
+                        if (response.getMessage() != null) {
+                            return response.getMessage();
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "handleActionRequestQuestion: " + e.getMessage());
+                    return null;
+                }
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String prefix) {
+            super.onPostExecute(prefix);
+            appUserEmailId = "sunny@gmail.com";
+            cardName = "Card5.jpeg";
+            String url = prefix + "/" + appUserEmailId + "/" + cardName;
+            loadImageFromUrl(url);
+        }
     }
 
     /**
