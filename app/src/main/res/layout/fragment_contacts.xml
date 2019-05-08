@@ -10,6 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_30"
         android:text="@string/txt_phone"
         android:textAllCaps="true"
         android:textColor="@color/color_text_initial"
