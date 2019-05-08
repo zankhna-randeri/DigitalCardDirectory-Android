@@ -14,15 +14,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.avengers.businesscardapp.dto.Card;
+import com.avengers.businesscardapp.fragment.CardFragment;
 import com.avengers.businesscardapp.fragment.ContactsFragment;
 import com.avengers.businesscardapp.util.Constants;
 
 public class CardDetailActivity extends AppCompatActivity implements
-        View.OnClickListener, ContactsFragment.OnFragmentInteractionListener {
+        View.OnClickListener, ContactsFragment.OnFragmentInteractionListener,
+        CardFragment.OnFragmentInteractionListener {
 
     private Toolbar toolbar;
     private TextView title;
@@ -110,8 +111,10 @@ public class CardDetailActivity extends AppCompatActivity implements
         setSelected(btnCard);
         deselectButton(btnNotes);
         deselectButton(btnContacts);
-        Fragment contactsFragment = ContactsFragment.newInstance(card);
-        replaceFragment(contactsFragment);
+//        Fragment cardFragment = CardFragment.newInstance(card.getCardName());
+//        replaceFragment(cardFragment);
+        Fragment cardFragment = CardFragment.newInstance();
+        replaceFragment(cardFragment);
     }
 
     private void handleContactsClick() {
