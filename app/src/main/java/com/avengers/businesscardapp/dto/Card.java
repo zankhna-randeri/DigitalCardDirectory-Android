@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Card implements Parcelable {
+    private int cardId;
     private String name;
     private String organization;
     private String emailId;
@@ -11,8 +12,10 @@ public class Card implements Parcelable {
     private String notes;
     private String cardName;
 
-    public Card(String name, String organization, String emailId,
+
+    public Card(int cardId, String name, String organization, String emailId,
                 String phoneNumber, String notes, String cardName) {
+        this.cardId = cardId;
         this.name = name;
         this.organization = organization;
         this.emailId = emailId;
@@ -22,11 +25,13 @@ public class Card implements Parcelable {
     }
 
     protected Card(Parcel in) {
+        cardId = in.readInt();
         name = in.readString();
         organization = in.readString();
         emailId = in.readString();
         phoneNumber = in.readString();
         notes = in.readString();
+        cardName = in.readString();
     }
 
     public static final Creator<Card> CREATOR = new Creator<Card>() {
@@ -40,6 +45,22 @@ public class Card implements Parcelable {
             return new Card[size];
         }
     };
+
+    public int getCardId() {
+        return cardId;
+    }
+
+    public void setCardId(int cardId) {
+        this.cardId = cardId;
+    }
+
+    public String getCardName() {
+        return cardName;
+    }
+
+    public void setCardName(String cardName) {
+        this.cardName = cardName;
+    }
 
     public String getName() {
         return name;
@@ -88,10 +109,12 @@ public class Card implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.cardId);
         dest.writeString(this.name);
         dest.writeString(this.organization);
         dest.writeString(this.emailId);
         dest.writeString(this.phoneNumber);
         dest.writeString(this.notes);
+        dest.writeString(this.cardName);
     }
 }
