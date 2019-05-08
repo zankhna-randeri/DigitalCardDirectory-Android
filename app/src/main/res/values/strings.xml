@@ -27,7 +27,4 @@
     <string name="action_settings">Settings</string>
     <string name="txt_err_call">No application available to call</string>
     <string name="txt_err_empty_call">Please enter phone number</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
