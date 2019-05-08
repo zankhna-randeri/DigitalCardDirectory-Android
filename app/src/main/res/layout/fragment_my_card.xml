@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.MyCardFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"
+            android:padding="@dimen/padding_5">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/searchID"
+                android:text="Search..."/>
+
+            <TextView
+                android:id="@+id/img_user"
+                android:layout_width="@dimen/profile_img"
+                android:layout_height="@dimen/profile_img"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:background="#eaeaea"
+                android:gravity="center"
+                android:text="JD"
+                android:textAllCaps="true"
+                android:textColor="#9b9999"
+                android:textSize="@dimen/font_name_initial"
+                android:textStyle="bold"
+                android:layout_below="@+id/searchID"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_8"
+                android:layout_toEndOf="@+id/img_user"
+                android:layout_toRightOf="@id/img_user"
+                android:orientation="vertical"
+                android:weightSum="3"
+                android:layout_below="@+id/searchID">
+
+                <TextView
+                    android:id="@+id/txt_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="John Doe"
+                    android:textStyle="bold"
+                    android:theme="@style/TextDetailTheme" />
+
+                <TextView
+                    android:id="@+id/txt_org"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="Abby Organization"
+                    android:textColor="#5C6BC0"
+                    android:theme="@style/TextDetailTheme" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+</FrameLayout>

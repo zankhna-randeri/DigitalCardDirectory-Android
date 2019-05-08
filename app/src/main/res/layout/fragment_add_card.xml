@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.AddCardFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/browse"
+            android:text="Browse" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/browse"
+            android:id="@+id/selected"
+            android:textStyle="bold"
+            android:textColor="#4189E1"
+            android:textSize="20sp"
+            android:text="Selected file" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/selected"
+            android:id="@+id/file_path"
+            android:text="No file has been selected"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/image_camera"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:src="@drawable/ic_image_addcard"
+            android:layout_below="@+id/selected"
+            android:scaleType="centerCrop"
+            />
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerCrop"
+            android:id="@+id/button_camera"
+            android:src="@drawable/ic_menu_camera"
+            android:layout_below="@id/image_camera"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/submit"
+                android:text="Submit" />
+
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>
