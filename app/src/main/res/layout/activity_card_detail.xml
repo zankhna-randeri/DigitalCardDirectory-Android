@@ -100,8 +100,7 @@
             android:id="@+id/fragment_card_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/tab"
-            android:layout_marginTop="@dimen/margin_30" />
+            android:layout_below="@id/tab" />
 
     </RelativeLayout>
 
