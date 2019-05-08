@@ -94,7 +94,6 @@ public class CardDetailActivity extends AppCompatActivity implements
             Fragment contactsFragment = ContactsFragment.newInstance(card);
             setDefaultFragment(contactsFragment);
         }
-
     }
 
     private void initView() {
