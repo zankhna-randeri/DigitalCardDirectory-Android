@@ -15,7 +15,7 @@
     <string name="customer_exists">Customer Record Exists For this Email. Please Login</string>
     <string name="success_msg">Customer Info Saved Successfully</string>
     <string name="password_match">Passowrds Doesnt match</string>
-    <string name="login_validation">Email Id and Password doesnt match. Please verify your credentials</string>
+    <string name="login_validation">Email Id and Password doesn\'t match. Please verify your credentials</string>
     <string name="no_customer_record">No record with this Email. Please signup</string>
 
     <string name="title_activity_navigtion">NavigtionActivity</string>
@@ -27,4 +27,7 @@
     <string name="action_settings">Settings</string>
     <string name="txt_err_call">No application available to call</string>
     <string name="txt_err_empty_call">Please enter phone number</string>
+    <string name="txt_hint_notes">Enter notes</string>
+    <string name="txt_update_notes">Update Notes</string>
+    <string name="txt_err_notes">Empty notes can not be saved</string>
 </resources>
