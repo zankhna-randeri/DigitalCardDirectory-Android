@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.avengers.businesscardapp.dto.Card;
 import com.avengers.businesscardapp.fragment.CardFragment;
 import com.avengers.businesscardapp.fragment.ContactsFragment;
+import com.avengers.businesscardapp.fragment.NotesFragment;
 import com.avengers.businesscardapp.util.Constants;
 
 public class CardDetailActivity extends AppCompatActivity implements
@@ -114,7 +115,7 @@ public class CardDetailActivity extends AppCompatActivity implements
         setSelected(btnCard);
         deselectButton(btnNotes);
         deselectButton(btnContacts);
-//        Fragment cardFragment = CardFragment.newInstance(card.getCardName());
+//        Fragment cardFragment = CardFragment.newInstance(card.getFileName());
 //        replaceFragment(cardFragment);
         Fragment cardFragment = CardFragment.newInstance();
         replaceFragment(cardFragment);
@@ -132,7 +133,9 @@ public class CardDetailActivity extends AppCompatActivity implements
         setSelected(btnNotes);
         deselectButton(btnContacts);
         deselectButton(btnCard);
-        Fragment contactsFragment = ContactsFragment.newInstance(card);
+        //TODO : uncomment below line
+//        Fragment contactsFragment = NotesFragment.newInstance(card.getCardId());
+        Fragment contactsFragment = NotesFragment.newInstance(1);
         replaceFragment(contactsFragment);
     }
 
