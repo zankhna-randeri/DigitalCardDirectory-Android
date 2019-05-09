@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.avengers.businesscardapp.dto.Card;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,17 +24,20 @@ public class DataControllerBusinessCard {
             " LastName text not null, EmailId text not null, Password text not null)";
 
     //logic to add business card information to the DB
-    public static final String CONTACT_NAME="ContactName";
-    public static final String CONTACT_ORGANIZATION="ContactOrganization";
-    public static final String CONTACT_EMAIL="ContactEmail";
-    public static final String CONTACT_NUMBER="ContactNUmber";
-    public static final String USER_EMAIL="UserEmail";
-    public static final String FILE_NAME="FileName";
-    public static final String TABLE_NAME_CONTACT="Contact_Info";
-    public static final String TABLE_CREATE_CONTACT="create table Contact_Info (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-            "UserEmail text not null, " +
-            " CONTACT_NAME text not null, ContactOrganization text not null, CONTACT_EMAIL text not null," +
-            " CONTACT_NUMBER text not null, FILE_NAME text not null)";
+    public static final String CONTACT_ID = "ID";
+    public static final String CONTACT_NAME = "ContactName";
+    public static final String CONTACT_ORGANIZATION = "ContactOrganization";
+    public static final String CONTACT_EMAIL = "ContactEmail";
+    public static final String CONTACT_NUMBER = "ContactNumber";
+    public static final String USER_EMAIL = "UserEmail";
+    public static final String FILE_NAME = "FileName";
+    private static final String CONTACT_NOTES = "Notes";
+    public static final String TABLE_NAME_CONTACT = "Contact_Info";
+    public static final String TABLE_CREATE_CONTACT = "create table Contact_Info " +
+            "(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "UserEmail text not null, ContactName text not null, " +
+            "ContactOrganization text not null, ContactEmail text not null, " +
+            "ContactNumber text not null, FileName text not null, Notes text)";
 
     DataBaseHelper dbHelper;
     Context context;
@@ -53,29 +58,107 @@ public class DataControllerBusinessCard {
     }
 
     //Logic to add the contact Info to the DB and retrieve it from the DB
-    public long insertContactInfo(String userEmail, String contactName, String contactOrg, String contactEmail,
-                                  String contactNumber, String fileName)
-    {
-        ContentValues content=new ContentValues();
+    public long insertContactInfo(String userEmail, String contactName,
+                                  String contactOrg, String contactEmail,
+                                  String contactNumber, String fileName, String notes) {
+        ContentValues content = new ContentValues();
         content.put(USER_EMAIL, userEmail);
         content.put(CONTACT_NAME, contactName);
         content.put(CONTACT_ORGANIZATION, contactOrg);
         content.put(CONTACT_EMAIL, contactEmail);
         content.put(CONTACT_NUMBER, contactNumber);
         content.put(FILE_NAME, fileName);
+        content.put(CONTACT_NOTES, notes);
         return db.insertOrThrow(TABLE_NAME_CONTACT, null, content);
     }
 
-    public Cursor retrieveContactInfo(String userEmail, Integer ID)
-    {
-        String query = "SELECT * FROM Contact_Info WHERE UserEmail='" +userEmail+"'" + " AND ID=" + ID;
+    /**
+     * Fetch card detail for current card and for current app user
+     *
+     * @param ID Card Id
+     * @return Card detail of given cardID for current app user
+     */
+    public Card retrieveContactInfo(Integer ID) {
+        String query = "SELECT * FROM " + TABLE_NAME_CONTACT + " WHERE " +
+                CONTACT_ID + " = " + ID;
         db = dbHelper.getReadableDatabase();
-        Cursor  cursor = db.rawQuery(query,null);
-
-        return cursor;
+        Cursor cursor = db.rawQuery(query, null);
+        Card card = new Card();
+        if (cursor != null && cursor.moveToFirst()) {
+            card.setCardId(cursor.getInt(0));
+            card.setName(cursor.getString(cursor.getColumnIndex(CONTACT_NAME)));
+            card.setOrganization(cursor.getString(cursor.getColumnIndex(CONTACT_ORGANIZATION)));
+            card.setEmailId(cursor.getString(cursor.getColumnIndex(CONTACT_EMAIL)));
+            card.setPhoneNumber(cursor.getString(cursor.getColumnIndex(CONTACT_NUMBER)));
+            card.setNotes(cursor.getString(cursor.getColumnIndex(CONTACT_NOTES)));
+            card.setFileName(cursor.getString(cursor.getColumnIndex(FILE_NAME)));
+            cursor.moveToNext();
+        }
+        return card;
     }
 
-//END
+    /**
+     * Fetches all contacts saved by current app user. Used to list cards.
+     *
+     * @param userEmail emailId of app user
+     * @return list of cards current app user has stored
+     */
+    public List<Card> retrieveAllCardsInfo(String userEmail) {
+        String query = "SELECT * FROM Contact_Info WHERE UserEmail='" + userEmail + "'";
+        db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        List<Card> cards = new ArrayList<>();
+        if (cursor != null && cursor.moveToFirst()) {
+            Card card = new Card();
+            card.setCardId(cursor.getInt(0));
+            card.setName(cursor.getString(cursor.getColumnIndex(CONTACT_NAME)));
+            card.setOrganization(cursor.getString(cursor.getColumnIndex(CONTACT_ORGANIZATION)));
+            card.setEmailId(cursor.getString(cursor.getColumnIndex(CONTACT_EMAIL)));
+            card.setPhoneNumber(cursor.getString(cursor.getColumnIndex(CONTACT_NUMBER)));
+            card.setNotes(cursor.getString(cursor.getColumnIndex(CONTACT_NOTES)));
+            card.setFileName(cursor.getString(cursor.getColumnIndex(FILE_NAME)));
+            cards.add(card);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return cards;
+    }
+
+    /**
+     * @param cardId Id of current Card
+     * @param notes  new notes value
+     * @return true
+     */
+    public int updateNotes(int cardId, String notes) {
+        try {
+            String args[] = new String[]{String.valueOf(cardId)};
+            ContentValues newValues = new ContentValues();
+            newValues.put(CONTACT_NOTES, notes);
+            return db.update(TABLE_NAME_CONTACT, newValues, CONTACT_ID + "=?", args);
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
+    /**
+     * Fetch notes of provided card id
+     *
+     * @param cardId current cardId
+     * @return Notes
+     */
+    public String retrieveNotes(int cardId) {
+        String query = "SELECT * FROM Customer_Info WHERE " +
+                CONTACT_ID + " = '" + cardId + "'";
+        db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        String notes = "";
+        if (cursor != null && cursor.moveToFirst()) {
+            notes = cursor.getString(cursor.getColumnIndex(CONTACT_NOTES));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return notes;
+    }
 
     //method call to insert User records to the db
     public long insert(String firstName, String lastName, String emailId, String password) {
