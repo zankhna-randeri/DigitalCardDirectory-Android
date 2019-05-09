@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -22,9 +23,19 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.avengers.businesscardapp.R;
+import com.avengers.businesscardapp.util.NetworkHelper;
+import com.avengers.businesscardapp.webservice.BusinessCardWebservice;
+import com.avengers.businesscardapp.webservice.GenericResponse;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -43,10 +54,12 @@ public class AddCardFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int CAMERA_REQUEST = 2 ;
+    private final String TAG = "CardFragment";
 
     private ImageButton cameraButton;
     private ImageView cardImage;
     private Button submitBtn;
+    String cardFilePath;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -98,7 +111,7 @@ public class AddCardFragment extends Fragment {
 
             // CALL THIS METHOD TO GET THE ACTUAL PATH
             File finalFile = new File(getRealPathFromURI(tempUri));
-
+            cardFilePath = getRealPathFromURI(tempUri);
             System.out.println("ffffff"+getRealPathFromURI(tempUri));
            // System.out.println(mImageCaptureUri);
         }
@@ -155,9 +168,10 @@ public class AddCardFragment extends Fragment {
                         requestPermissions(permission, CAMERA_REQUEST);
                     }else{
                         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                        /*if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
                             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                        }
+                        }*/
                     }
                 }else {
                     //system os is lower version
@@ -166,16 +180,16 @@ public class AddCardFragment extends Fragment {
         });
 
         submitBtn.setOnClickListener(new View.OnClickListener() {
-            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String emailId = sharedPrefs.getString("Email_Id", "");
             @Override
             public void onClick(View v) {
+                new UploadCardTask(getActivity().getApplicationContext()).execute();
 
             }
         });
 
         return v;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -216,4 +230,50 @@ public class AddCardFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
+    private class UploadCardTask extends AsyncTask<Void, String, String> {
+
+        private Context mContext;
+
+        public UploadCardTask(Context mContext) {
+            this.mContext = mContext;
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String emailId = sharedPrefs.getString("Email_Id", "");
+            //Create a file object using file path
+            File file = new File(cardFilePath);
+            // Create a request body with file and image media type
+            MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
+            //RequestBody fileReqBody = RequestBody.create(MediaType.parse("image/*"), file);
+            RequestBody email = RequestBody.create(MediaType.parse("text/plain"), emailId);
+
+            if (NetworkHelper.hasNetworkAccess(mContext)) {
+                BusinessCardWebservice webservice = BusinessCardWebservice
+                        .retrofit.create(BusinessCardWebservice.class);
+                Call<GenericResponse> call = webservice.uploadCard(filePart,email);
+                try {
+                    GenericResponse response = call.execute().body();
+                    if (response != null) {
+                        if (response.getMessage() != null) {
+                            return response.getMessage();
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "handleActionRequestQuestion: " + e.getMessage());
+                    return null;
+                }
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String prefix) {
+            super.onPostExecute(prefix);
+
+        }
+    }
 }
