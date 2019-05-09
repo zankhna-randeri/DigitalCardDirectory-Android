@@ -10,18 +10,18 @@ public class Card implements Parcelable {
     private String emailId;
     private String phoneNumber;
     private String notes;
-    private String cardName;
+    private String fileName;
 
 
     public Card(int cardId, String name, String organization, String emailId,
-                String phoneNumber, String notes, String cardName) {
+                String phoneNumber, String notes, String fileName) {
         this.cardId = cardId;
         this.name = name;
         this.organization = organization;
         this.emailId = emailId;
         this.phoneNumber = phoneNumber;
         this.notes = notes;
-        this.cardName = cardName;
+        this.fileName = fileName;
     }
 
     protected Card(Parcel in) {
@@ -31,7 +31,7 @@ public class Card implements Parcelable {
         emailId = in.readString();
         phoneNumber = in.readString();
         notes = in.readString();
-        cardName = in.readString();
+        fileName = in.readString();
     }
 
     public static final Creator<Card> CREATOR = new Creator<Card>() {
@@ -46,6 +46,10 @@ public class Card implements Parcelable {
         }
     };
 
+    public Card() {
+
+    }
+
     public int getCardId() {
         return cardId;
     }
@@ -54,12 +58,12 @@ public class Card implements Parcelable {
         this.cardId = cardId;
     }
 
-    public String getCardName() {
-        return cardName;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setCardName(String cardName) {
-        this.cardName = cardName;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public String getName() {
@@ -115,6 +119,6 @@ public class Card implements Parcelable {
         dest.writeString(this.emailId);
         dest.writeString(this.phoneNumber);
         dest.writeString(this.notes);
-        dest.writeString(this.cardName);
+        dest.writeString(this.fileName);
     }
 }
