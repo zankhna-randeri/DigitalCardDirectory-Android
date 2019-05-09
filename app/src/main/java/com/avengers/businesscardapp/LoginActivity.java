@@ -61,6 +61,9 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("First_Name", firstName);
                     editor.putString("Last_Name", lastName);
                     editor.commit();
+                    Intent intent = new Intent(this, NavigtionActivity.class);
+                    startActivity(intent);
+
                 } else {
                     Context context = getApplicationContext();
                     CharSequence text = getString(R.string.login_validation);

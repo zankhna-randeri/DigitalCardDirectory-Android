@@ -8,4 +8,11 @@
     tools:context=".NavigtionActivity"
     tools:showIn="@layout/app_bar_navigtion">
 
+    <FrameLayout
+        android:layout_marginTop="@dimen/margin_30"
+        android:id="@+id/fragment_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
 </android.support.constraint.ConstraintLayout>
