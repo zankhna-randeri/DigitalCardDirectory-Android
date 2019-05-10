@@ -1,73 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.AddCardFragment">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+    <ImageView
+        android:id="@+id/img_camera"
+        android:layout_width="@dimen/card_width"
+        android:layout_height="@dimen/card_width"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_card_placeholder" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+    <Button
+        android:id="@+id/btn_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_camera"
+        android:layout_centerHorizontal="true"
+        android:drawableStart="@drawable/ic_camera"
+        android:drawableLeft="@drawable/ic_camera"
+        android:drawablePadding="@dimen/padding_8"
+        android:padding="@dimen/padding_8"
+        android:text="@string/txt_click_pic"
+        android:theme="@style/ButtonTheme" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/browse"
-            android:text="Browse" />
+    <Button
+        android:id="@+id/btn_photos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_camera"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="@dimen/margin_30"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:drawableStart="@drawable/ic_photos"
+        android:drawableLeft="@drawable/ic_photos"
+        android:drawablePadding="@dimen/padding_8"
+        android:padding="@dimen/padding_8"
+        android:text="@string/txt_select_photos"
+        android:theme="@style/ButtonTheme" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/browse"
-            android:id="@+id/selected"
-            android:textStyle="bold"
-            android:textColor="#4189E1"
-            android:textSize="20sp"
-            android:text="Selected file" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/selected"
-            android:id="@+id/file_path"
-            android:text="No file has been selected"
-            android:textSize="18sp" />
-
-        <ImageView
-            android:id="@+id/image_camera"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:src="@drawable/ic_image_addcard"
-            android:layout_below="@+id/selected"
-            android:scaleType="centerCrop"
-            />
-        <ImageButton
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_centerHorizontal="true"
-            android:scaleType="centerCrop"
-            android:id="@+id/button_camera"
-            android:src="@drawable/ic_menu_camera"
-            android:layout_below="@id/image_camera"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/submit"
-                android:text="Submit" />
-
-
-
-        </LinearLayout>
-
-    </RelativeLayout>
-
-</FrameLayout>
+</RelativeLayout>
