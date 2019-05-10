@@ -1,193 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
-    android:padding="8dip"
-    >
+    android:orientation="vertical">
 
-    <Space
-        android:layout_width="1dp"
-        android:layout_height="100dp"/>
+    <include
+        layout="@layout/toolbar_app"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_30"
+        android:padding="@dimen/padding_20">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="330dp"
-        android:layout_height="80dp"
-        android:layout_gravity="center_horizontal"
-        android:orientation="vertical"
-        android:background="@color/colorWhite">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_gravity="center"
-            android:layout_marginLeft="41dp"
-            android:text=""
-            android:textColor="@color/colorBlack"
-            android:textSize="25dp" />
 
         <EditText
-            android:id="@+id/firstName"
-            android:layout_width="300dp"
-            android:layout_height="75dp"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="15dp"
-            android:backgroundTint="@color/colorBlack"
-            android:hint="Enter First Name" />
-
-    </RelativeLayout>
-
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="330dp"
-        android:layout_height="80dp"
-        android:layout_gravity="center_horizontal"
-        android:orientation="vertical"
-        android:background="@color/colorWhite">
-
-        <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/edt_first_name"
+            style="@style/TextDetailTheme"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_gravity="center"
-            android:layout_marginLeft="41dp"
-            android:text=""
-            android:textColor="@color/colorBlack"
-            android:textSize="25dp" />
+            android:hint="@string/txt_hint_first_name" />
+
 
         <EditText
-            android:id="@+id/lastName"
-            android:layout_width="300dp"
-            android:layout_height="75dp"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="15dp"
-            android:backgroundTint="@color/colorBlack"
-            android:hint="Enter Last Name" />
-
-    </RelativeLayout>
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="330dp"
-        android:layout_height="80dp"
-        android:layout_gravity="center_horizontal"
-        android:orientation="vertical"
-        android:background="@color/colorWhite">
-
-        <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/edt_last_name"
+            style="@style/TextDetailTheme"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_gravity="center"
-            android:layout_marginLeft="61dp"
-            android:text=""
-            android:textColor="@color/colorBlack"
-            android:textSize="25dp" />
+            android:layout_below="@id/edt_first_name"
+            android:layout_marginTop="@dimen/margin_8"
+            android:hint="@string/txt_hint_last_name" />
+
 
         <EditText
-            android:id="@+id/emailId"
-            android:layout_width="300dp"
-            android:layout_height="75dp"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="15dp"
-            android:backgroundTint="@color/colorBlack"
-            android:hint="Enter Email Id" />
-
-    </RelativeLayout>
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="330dp"
-        android:layout_height="80dp"
-        android:layout_gravity="center_horizontal"
-        android:orientation="vertical"
-        android:background="@color/colorWhite">
-
-        <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/edt_email"
+            style="@style/TextDetailTheme"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_gravity="center"
-            android:layout_marginLeft="53dp"
-            android:text=""
-            android:textColor="@color/colorBlack"
-            android:textSize="25dp" />
+            android:layout_below="@id/edt_last_name"
+            android:layout_marginTop="@dimen/margin_8"
+            android:hint="@string/txt_hint_emailId"
+            android:inputType="textEmailAddress" />
+
 
         <EditText
-            android:id="@+id/password"
-            android:layout_width="300dp"
-            android:layout_height="75dp"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="15dp"
-            android:backgroundTint="@color/colorBlack"
-            android:inputType="textPassword"
-            android:hint="Password" />
-    </RelativeLayout>
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="330dp"
-        android:layout_height="80dp"
-        android:layout_gravity="center_horizontal"
-        android:orientation="vertical"
-        android:background="@color/colorWhite">
-
-        <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/edt_password"
+            style="@style/TextDetailTheme"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_gravity="center"
-            android:layout_marginLeft="0dp"
-            android:text=""
-            android:textColor="@color/colorBlack"
-            android:textSize="20sp" />
+            android:layout_below="@id/edt_email"
+            android:layout_marginTop="@dimen/margin_8"
+            android:hint="@string/txt_password"
+            android:inputType="textPassword" />
+
 
         <EditText
-            android:id="@+id/confirmPassword"
-            android:layout_width="300dp"
-            android:layout_height="75dp"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="15dp"
-            android:backgroundTint="@color/colorBlack"
-            android:inputType="textPassword"
-            android:hint="Re-Type Password" />
-    </RelativeLayout>
+            android:id="@+id/edt_confirm_password"
+            style="@style/TextDetailTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edt_password"
+            android:layout_marginTop="@dimen/margin_8"
+            android:hint="@string/txt_hint_retype_pwd"
+            android:inputType="textPassword" />
 
-    <Space
-        android:layout_width="1dp"
-        android:layout_height="20dp"/>
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal">
 
         <Button
-            android:id="@+id/signupSubmit"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="35dp"
-            android:onClick="saveCustomerDetails"
+            android:id="@+id/btn_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edt_confirm_password"
+            android:layout_marginTop="@dimen/margin_15"
             android:text="@string/submit"
-            android:background="@drawable/mybutton"
-            android:textColor="@color/colorWhite"
-            android:textSize="25dp" />
+            android:theme="@style/ButtonTheme" />
 
         <Button
-            android:id="@+id/signupCancel"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="35dp"
-            android:onClick="signupCancel"
+            android:id="@+id/btn_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_submit"
+            android:layout_marginTop="@dimen/margin_5"
             android:text="@string/cancel"
-            android:background="@drawable/mybutton_red"
-            android:textColor="@color/colorWhite"
-            android:textSize="25dp" />
+            android:theme="@style/ButtonTheme" />
     </RelativeLayout>
 
 </LinearLayout>
