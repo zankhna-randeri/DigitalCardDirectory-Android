@@ -38,4 +38,11 @@
     <string name="txt_hint_email">Email Id</string>
     <string name="txt_login">Login</string>
     <string name="txt_signup_msg">Not a member? Sign Up</string>
+    <string name="txt_my_cards">My Cards</string>
+    <string name="txt_add_card">Add Card</string>
+    <string name="menu_save_card">Save Card</string>
+    <string name="txt_click_pic">Click Picture</string>
+    <string name="txt_select_photos">Select from Photos</string>
+    <string name="txt_denied_camera">Application needs camera permission to click picture</string>
+    <string name="txt_denied_photos">Application needs read permission to select photo</string>
 </resources>
