@@ -15,7 +15,7 @@
     </style>
 
     <style name="ButtonTheme" parent="Theme.AppCompat">
-        <item name="android:padding">@dimen/padding_8</item>
+        <item name="android:padding">@dimen/padding_12</item>
         <item name="colorButtonNormal">@color/colorPrimary</item>
         <item name="colorControlHighlight">@color/color_button_select</item>
         <item name="android:fontFamily">@font/app_font</item>
