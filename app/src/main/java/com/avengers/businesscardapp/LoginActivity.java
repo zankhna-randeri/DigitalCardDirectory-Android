@@ -136,7 +136,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                    editor.putString("First_Name", firstName);
 //                    editor.putString("Last_Name", lastName);
 //                    editor.commit();
-//                    Intent intent = new Intent(this, NavigtionActivity.class);
+//                    Intent intent = new Intent(this, NavigationActivity.class);
 //                    startActivity(intent);
 //
 //                } else {
@@ -195,7 +195,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     showMsg(response.getMessage());
                 } else {
                     saveDataToPrefs(user.getEmailId(), response);
-                    Intent intent = new Intent(LoginActivity.this, NavigtionActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, NavigationActivity.class);
                     startActivity(intent);
                 }
             }
