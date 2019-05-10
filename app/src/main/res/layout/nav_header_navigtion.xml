@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_profile"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
     android:background="@drawable/side_nav_bar"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:id="@+id/layout_profile"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -22,20 +22,18 @@
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <TextView
+        android:id="@+id/text_name"
+        style="@style/HeaderTextTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/text_name"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Firstname LastName"
-        android:textColor="@android:color/white"
-        android:textAppearance="@style/TextDetailTheme" />
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/text_email"
+        style="@style/HeaderTextTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:text="example@gmail.com"
-        android:textAppearance="@style/TextDetailTheme"/>
+        android:textColor="@android:color/white" />
 
 </LinearLayout>
