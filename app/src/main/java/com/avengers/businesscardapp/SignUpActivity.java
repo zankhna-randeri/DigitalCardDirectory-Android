@@ -148,6 +148,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         return false;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
     private class SignUpTask extends AsyncTask<Void, GenericResponse, GenericResponse> {
 
         private Context mContext;
