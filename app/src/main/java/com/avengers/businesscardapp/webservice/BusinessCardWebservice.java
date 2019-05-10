@@ -1,5 +1,6 @@
 package com.avengers.businesscardapp.webservice;
 
+import com.avengers.businesscardapp.dto.LoginUser;
 import com.avengers.businesscardapp.dto.SignupUser;
 
 import okhttp3.MultipartBody;
@@ -27,6 +28,8 @@ public interface BusinessCardWebservice {
     @POST("/userSignup")
     Call<GenericResponse> registerUser(@Body SignupUser userRequest);
 
+    @POST("/userLogin")
+    Call<LoginResponse> loginUser(@Body LoginUser userLoginRequest);
 
     @GET("/getCloudFrontUrl")
     Call<GenericResponse> getCardUrl();
