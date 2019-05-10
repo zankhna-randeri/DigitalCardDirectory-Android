@@ -2,8 +2,8 @@ package com.avengers.businesscardapp.webservice;
 
 public class GenericResponse {
 
-
     private String message;
+    private Integer responseCode;
 
     public GenericResponse() {
     }
@@ -19,5 +19,13 @@ public class GenericResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Integer getResponseCode() {
+        return responseCode;
+    }
+
+    public void setResponseCode(Integer responseCode) {
+        this.responseCode = responseCode;
     }
 }
