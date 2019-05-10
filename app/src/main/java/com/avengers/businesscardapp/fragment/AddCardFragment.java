@@ -13,20 +13,24 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.avengers.businesscardapp.R;
 import com.avengers.businesscardapp.util.NetworkHelper;
 import com.avengers.businesscardapp.webservice.BusinessCardWebservice;
 import com.avengers.businesscardapp.webservice.GenericResponse;
-import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -40,26 +44,23 @@ import retrofit2.Call;
 import static android.app.Activity.RESULT_OK;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link AddCardFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link AddCardFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * AddCard fragment.
  */
-public class AddCardFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+public class AddCardFragment extends Fragment implements View.OnClickListener {
+
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final int CAMERA_REQUEST = 2 ;
+    private final String ARG_PARAM2 = "param2";
+    private final int CAMERA_REQUEST = 2;
+    private final int PHOTOS_REQUEST = 4;
+
+    private final int REQUEST_IMAGE_CAPTURE = 1;
+    private final int REQUEST_GET_SINGLE_FILE = 3;
     private final String TAG = "CardFragment";
 
-    private ImageButton cameraButton;
+    private Button cameraButton, btnPhotos;
     private ImageView cardImage;
-    private Button submitBtn;
-    String cardFilePath;
+
+    private String cardFilePath;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -71,13 +72,6 @@ public class AddCardFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @return A new instance of fragment AddCardFragment.
-     */
     // TODO: Rename and change types and number of parameters
     public static AddCardFragment newInstance(String param1) {
         AddCardFragment fragment = new AddCardFragment();
@@ -87,7 +81,6 @@ public class AddCardFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
 
 
     private void dispatchTakePictureIntent() {
@@ -100,21 +93,62 @@ public class AddCardFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            cardImage.setImageBitmap(photo);
-            cameraButton.setVisibility(Button.VISIBLE);
-
-
-            // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
-            Uri tempUri = getImageUri(getActivity().getApplicationContext(), photo);
-
-            // CALL THIS METHOD TO GET THE ACTUAL PATH
-            File finalFile = new File(getRealPathFromURI(tempUri));
-            cardFilePath = getRealPathFromURI(tempUri);
-            System.out.println("ffffff"+getRealPathFromURI(tempUri));
-           // System.out.println(mImageCaptureUri);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_IMAGE_CAPTURE:
+                    handleCameraResponse(data);
+                    break;
+                case REQUEST_GET_SINGLE_FILE:
+                    handlePhotosResponse(data);
+                    break;
+            }
         }
+    }
+
+    private void handlePhotosResponse(Intent data) {
+        Uri selectedImageUri = data.getData();
+        // Get the path from the Uri
+        final String path = getPathFromPhotoURL(selectedImageUri);
+        if (path != null) {
+            File f = new File(path);
+            selectedImageUri = Uri.fromFile(f);
+        }
+        // Set the image in ImageView
+        cardImage.setImageURI(selectedImageUri);
+    }
+
+    private String getPathFromPhotoURL(Uri selectedImageUri) {
+        String res = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        if (getActivity() != null) {
+            Cursor cursor = getActivity().
+                    getContentResolver().
+                    query(selectedImageUri, proj, null, null, null);
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                    res = cursor.getString(column_index);
+                }
+                cursor.close();
+            }
+        }
+        return res;
+    }
+
+    private void handleCameraResponse(Intent data) {
+        Bitmap photo = (Bitmap) data.getExtras().get("data");
+        cardImage.setImageBitmap(photo);
+        cameraButton.setVisibility(Button.VISIBLE);
+
+
+        // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
+        Uri tempUri = getImageUri(getActivity().getApplicationContext(), photo);
+
+        // CALL THIS METHOD TO GET THE ACTUAL PATH
+        File finalFile = new File(getRealPathFromURI(tempUri));
+        cardFilePath = getRealPathFromURI(tempUri);
+        System.out.println("ffffff" + getRealPathFromURI(tempUri));
+        // System.out.println(mImageCaptureUri);
     }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
@@ -145,57 +179,55 @@ public class AddCardFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_add_card, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_done:
+                new UploadCardTask(getActivity().getApplicationContext()).execute();
+                return true;
+            default:
+                break;
+        }
+        return false;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_add_card, container, false);
-        cameraButton = (ImageButton) v.findViewById(R.id.button_camera);
-        cardImage = (ImageView) v.findViewById(R.id.image_camera);
-        submitBtn = (Button) v.findViewById(R.id.submit);
-
-        cameraButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if(getActivity().checkSelfPermission(Manifest.permission.CAMERA) ==
-                            PackageManager.PERMISSION_DENIED ||
-                            getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
-                                    PackageManager.PERMISSION_DENIED) {
-                        String permission[] = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                        requestPermissions(permission, CAMERA_REQUEST);
-                    }else{
-                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                        /*if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                        }*/
-                    }
-                }else {
-                    //system os is lower version
-                }
-            }
-        });
-
-        submitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new UploadCardTask(getActivity().getApplicationContext()).execute();
-
-            }
-        });
-
-        return v;
+        return inflater.inflate(R.layout.fragment_add_card, container, false);
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        cameraButton = view.findViewById(R.id.btn_camera);
+        btnPhotos = view.findViewById(R.id.btn_photos);
+        cardImage = view.findViewById(R.id.img_camera);
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        cameraButton.setOnClickListener(this);
+        btnPhotos.setOnClickListener(this);
+    }
+
+    private void openPhotos() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"),
+                REQUEST_GET_SINGLE_FILE);
+    }
+
+    private void showMsg(String msg) {
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -215,6 +247,82 @@ public class AddCardFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_camera:
+                handleCameraClick();
+                break;
+            case R.id.btn_photos:
+                handlePhotosClick();
+                openPhotos();
+                break;
+        }
+    }
+
+    private void handlePhotosClick() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (getActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                    PackageManager.PERMISSION_GRANTED) {
+                String[] permissions = {Manifest.permission.CAMERA,
+                        Manifest.permission.READ_EXTERNAL_STORAGE};
+                requestPermissions(permissions, PHOTOS_REQUEST);
+            } else {
+                openPhotos();
+            }
+        } else {
+            openPhotos();
+        }
+    }
+
+    private void handleCameraClick() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (getActivity().checkSelfPermission(Manifest.permission.CAMERA) !=
+                    PackageManager.PERMISSION_GRANTED ||
+                    getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                            PackageManager.PERMISSION_GRANTED) {
+                String[] permissions = {Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                requestPermissions(permissions, CAMERA_REQUEST);
+            } else {
+                openCamera();
+                        /*if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                        }*/
+            }
+        } else {
+            //system os is lower version
+            openCamera();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case CAMERA_REQUEST:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openCamera();
+                } else {
+                    showMsg(getString(R.string.txt_denied_camera));
+                }
+                break;
+            case PHOTOS_REQUEST:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openCamera();
+                } else {
+                    showMsg(getString(R.string.txt_denied_photos));
+                }
+                break;
+        }
+    }
+
+    private void openCamera() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -230,7 +338,7 @@ public class AddCardFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private class UploadCardTask extends AsyncTask<Void, String, String> {
+    private class UploadCardTask extends AsyncTask<Void, GenericResponse, GenericResponse> {
 
         private Context mContext;
 
@@ -239,27 +347,26 @@ public class AddCardFragment extends Fragment {
         }
 
         @Override
-        protected String doInBackground(Void... voids) {
+        protected GenericResponse doInBackground(Void... voids) {
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             String emailId = sharedPrefs.getString("Email_Id", "");
             //Create a file object using file path
             File file = new File(cardFilePath);
             // Create a request body with file and image media type
-            MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
+            MultipartBody.Part filePart = MultipartBody.Part.createFormData("file",
+                    file.getName(),
+                    RequestBody.create(MediaType.parse("image/*"),
+                            file));
             //RequestBody fileReqBody = RequestBody.create(MediaType.parse("image/*"), file);
             RequestBody email = RequestBody.create(MediaType.parse("text/plain"), emailId);
 
             if (NetworkHelper.hasNetworkAccess(mContext)) {
                 BusinessCardWebservice webservice = BusinessCardWebservice
                         .retrofit.create(BusinessCardWebservice.class);
-                Call<GenericResponse> call = webservice.uploadCard(filePart,email);
+                Call<GenericResponse> call = webservice.uploadCard(filePart, email);
                 try {
                     GenericResponse response = call.execute().body();
-                    if (response != null) {
-                        if (response.getMessage() != null) {
-                            return response.getMessage();
-                        }
-                    }
+                    return response;
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.e(TAG, "handleActionRequestQuestion: " + e.getMessage());
@@ -271,9 +378,11 @@ public class AddCardFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(String prefix) {
-            super.onPostExecute(prefix);
-
+        protected void onPostExecute(GenericResponse response) {
+            super.onPostExecute(response);
+            if (response != null && response.getMessage() != null) {
+                showMsg(response.getMessage());
+            }
         }
     }
 }
