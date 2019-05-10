@@ -14,26 +14,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avengers.businesscardapp.fragment.AddCardFragment;
 import com.avengers.businesscardapp.fragment.MyCardFragment;
 
 
-public class NavigtionActivity extends AppCompatActivity
+public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         MyCardFragment.OnFragmentInteractionListener, AddCardFragment.OnFragmentInteractionListener {
 
     private Toolbar toolbar;
-    private TextView name, email;
+    private TextView txtName, txtEmail;
     private TextView title;
     private String emailId, firstName, lastName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_navigtion);
+        setContentView(R.layout.activity_navigation);
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         emailId = sharedPrefs.getString("Email_Id", "");
         firstName = sharedPrefs.getString("First_Name", "");
@@ -58,10 +57,10 @@ public class NavigtionActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View header = navigationView.getHeaderView(0);
-        name = header.findViewById(R.id.text_name);
-        email = header.findViewById(R.id.text_email);
-        name.setText(firstName + " " + lastName);
-        email.setText(emailId);
+        txtName = header.findViewById(R.id.text_name);
+        txtEmail = header.findViewById(R.id.text_email);
+        txtName.setText((firstName + " " + lastName));
+        txtEmail.setText(emailId);
     }
 
     private void setUpToolbar() {
