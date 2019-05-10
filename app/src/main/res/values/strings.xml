@@ -8,17 +8,17 @@
     <string name="txt_email">Email</string>
     <string name="menu_delete_card">Delete Card</string>
     <string name="business_card_home_msg">BUSINESS CARD</string>
-    <string name="submit">SUBMIT</string>
-    <string name="cancel">CANCEL</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
     <string name="enter_login_info">Please Enter Login Details</string>
     <string name="enter_all_signup_fields">Fields cannot be blank</string>
     <string name="customer_exists">Customer Record Exists For this Email. Please Login</string>
     <string name="success_msg">Customer Info Saved Successfully</string>
-    <string name="password_match">Passowrds Doesnt match</string>
+    <string name="password_match">Passowords Doesn\'t match</string>
     <string name="login_validation">Email Id and Password doesn\'t match. Please verify your credentials</string>
     <string name="no_customer_record">No record with this Email. Please signup</string>
 
-    <string name="title_activity_navigtion">NavigtionActivity</string>
+    <string name="title_activity_navigtion">NavigationActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -30,4 +30,10 @@
     <string name="txt_hint_notes">Enter notes</string>
     <string name="txt_update_notes">Update Notes</string>
     <string name="txt_err_notes">Empty notes can not be saved</string>
+    <string name="txt_hint_first_name">Enter First Name</string>
+    <string name="txt_hint_last_name">Enter Last Name</string>
+    <string name="txt_hint_emailId">Enter Email Id</string>
+    <string name="txt_password">Password</string>
+    <string name="txt_hint_retype_pwd">Re-Type Password</string>
+    <string name="txt_sign_up">Sign Up</string>
 </resources>
