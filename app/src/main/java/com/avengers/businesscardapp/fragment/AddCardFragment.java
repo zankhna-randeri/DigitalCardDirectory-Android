@@ -7,11 +7,13 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,10 +29,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.avengers.businesscardapp.EditCardActivity;
 import com.avengers.businesscardapp.R;
+import com.avengers.businesscardapp.dto.UploadCardResponse;
+import com.avengers.businesscardapp.util.Constants;
 import com.avengers.businesscardapp.util.NetworkHelper;
 import com.avengers.businesscardapp.webservice.BusinessCardWebservice;
-import com.avengers.businesscardapp.webservice.GenericResponse;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -61,12 +65,12 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
     private ImageView cardImage;
 
     private String cardFilePath;
+    private Uri cardImageUri;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
 
     public AddCardFragment() {
         // Required empty public constructor
@@ -101,38 +105,65 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
                 case REQUEST_GET_SINGLE_FILE:
                     handlePhotosResponse(data);
                     break;
+                default:
+                    break;
             }
         }
     }
 
     private void handlePhotosResponse(Intent data) {
-        Uri selectedImageUri = data.getData();
-        // Get the path from the Uri
-        final String path = getPathFromPhotoURL(selectedImageUri);
-        if (path != null) {
-            File f = new File(path);
-            selectedImageUri = Uri.fromFile(f);
-        }
-        // Set the image in ImageView
-        cardImage.setImageURI(selectedImageUri);
+        cardImageUri = data.getData();
+        cardImage.setImageURI(cardImageUri);
+//        cardFilePath = getPathFromPhotoURL(selectedImageUri);
+        cardFilePath = getRealPathFromURI_API19(getActivity(), cardImageUri);
+        cardImage.setImageBitmap(BitmapFactory.decodeFile(cardFilePath));
     }
 
     private String getPathFromPhotoURL(Uri selectedImageUri) {
-        String res = null;
-        String[] proj = {MediaStore.Images.Media.DATA};
+        String result = null;
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
         if (getActivity() != null) {
             Cursor cursor = getActivity().
                     getContentResolver().
-                    query(selectedImageUri, proj, null, null, null);
+                    query(selectedImageUri, filePathColumn,
+                            null, null, null);
+//                    query(selectedImageUri, proj, null, null, null);
             if (cursor != null) {
-                if (cursor.moveToFirst()) {
-                    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                    res = cursor.getString(column_index);
-                }
+                cursor.moveToFirst();
+                int column_index = cursor.getColumnIndex(filePathColumn[0]);
+                result = cursor.getString(column_index);
                 cursor.close();
+            } else {
+                result = selectedImageUri.getPath();
             }
         }
-        return res;
+        return result;
+    }
+
+    public static String getRealPathFromURI_API19(Context context, Uri uri) {
+        String filePath = "";
+        String wholeID = DocumentsContract.getDocumentId(uri);
+
+        // Split at colon, use second item in the array
+        String id = wholeID.split(":")[1];
+
+        String[] column = {MediaStore.Images.Media.DATA};
+
+        // where id is equal to
+        String sel = MediaStore.Images.Media._ID + "=?";
+
+        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                column, sel, new String[]{id}, null);
+
+        int columnIndex = cursor.getColumnIndex(column[0]);
+
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
+        } else {
+            filePath = uri.getPath();
+        }
+        cursor.close();
+        return filePath;
     }
 
     private void handleCameraResponse(Intent data) {
@@ -140,33 +171,36 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
         cardImage.setImageBitmap(photo);
         cameraButton.setVisibility(Button.VISIBLE);
 
-
         // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
-        Uri tempUri = getImageUri(getActivity().getApplicationContext(), photo);
+//        Uri tempUri = getImageUri(getActivity().getApplicationContext(), photo);
+        cardImageUri = getImageUri(getActivity().getApplicationContext(), photo);
 
         // CALL THIS METHOD TO GET THE ACTUAL PATH
-        File finalFile = new File(getRealPathFromURI(tempUri));
-        cardFilePath = getRealPathFromURI(tempUri);
-        System.out.println("ffffff" + getRealPathFromURI(tempUri));
-        // System.out.println(mImageCaptureUri);
+        cardFilePath = getRealPathFromURI(cardImageUri);
+        Log.d(TAG, "handleCameraResponse: " + getRealPathFromURI(cardImageUri));
     }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        String path = MediaStore.Images.Media.
+                insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
 
     public String getRealPathFromURI(Uri uri) {
         String path = "";
-        if (getActivity().getContentResolver() != null) {
-            Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
-            if (cursor != null) {
-                cursor.moveToFirst();
-                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-                path = cursor.getString(idx);
-                cursor.close();
+        if (getActivity() != null) {
+            if (getActivity().getContentResolver() != null) {
+                Cursor cursor = getActivity()
+                        .getContentResolver()
+                        .query(uri, null, null, null, null);
+                if (cursor != null) {
+                    cursor.moveToFirst();
+                    int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                    path = cursor.getString(idx);
+                    cursor.close();
+                }
             }
         }
         return path;
@@ -192,7 +226,7 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_done:
-                new UploadCardTask(getActivity().getApplicationContext()).execute();
+                new UploadCardTask(getActivity()).execute();
                 return true;
             default:
                 break;
@@ -216,35 +250,6 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
 
         cameraButton.setOnClickListener(this);
         btnPhotos.setOnClickListener(this);
-    }
-
-    private void openPhotos() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("image/*");
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"),
-                REQUEST_GET_SINGLE_FILE);
-    }
-
-    private void showMsg(String msg) {
-        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -323,22 +328,25 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 
-    private class UploadCardTask extends AsyncTask<Void, GenericResponse, GenericResponse> {
+    private void openPhotos() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"),
+                REQUEST_GET_SINGLE_FILE);
+    }
+
+    private void showMsg(String msg) {
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    private class UploadCardTask extends AsyncTask<Void, UploadCardResponse, UploadCardResponse> {
 
         private Context mContext;
 
@@ -347,7 +355,7 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
         }
 
         @Override
-        protected GenericResponse doInBackground(Void... voids) {
+        protected UploadCardResponse doInBackground(Void... voids) {
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             String emailId = sharedPrefs.getString("Email_Id", "");
             //Create a file object using file path
@@ -363,9 +371,9 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
             if (NetworkHelper.hasNetworkAccess(mContext)) {
                 BusinessCardWebservice webservice = BusinessCardWebservice
                         .retrofit.create(BusinessCardWebservice.class);
-                Call<GenericResponse> call = webservice.uploadCard(filePart, email);
+                Call<UploadCardResponse> call = webservice.uploadCard(filePart, email);
                 try {
-                    GenericResponse response = call.execute().body();
+                    UploadCardResponse response = call.execute().body();
                     return response;
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -378,10 +386,14 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
         }
 
         @Override
-        protected void onPostExecute(GenericResponse response) {
+        protected void onPostExecute(UploadCardResponse response) {
             super.onPostExecute(response);
-            if (response != null && response.getMessage() != null) {
-                showMsg(response.getMessage());
+            if (response != null) {
+                Intent editIntent = new Intent(getActivity(), EditCardActivity.class);
+                editIntent.putExtra(Constants.EXTRA_CARD_DETAIL, response);
+                editIntent.putExtra(Constants.EXTRA_IMG_URI, cardImageUri);
+                startActivity(editIntent);
+                showMsg(response.toString());
             }
         }
     }
