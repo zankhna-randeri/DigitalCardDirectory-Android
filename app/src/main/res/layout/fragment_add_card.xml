@@ -13,7 +13,7 @@
 
     <Button
         android:id="@+id/btn_camera"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/width_250"
         android:layout_height="wrap_content"
         android:layout_below="@id/img_camera"
         android:layout_centerHorizontal="true"
@@ -26,12 +26,10 @@
 
     <Button
         android:id="@+id/btn_photos"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/width_250"
         android:layout_height="wrap_content"
         android:layout_below="@id/btn_camera"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="@dimen/margin_30"
-        android:layout_marginLeft="@dimen/margin_30"
         android:drawableStart="@drawable/ic_photos"
         android:drawableLeft="@drawable/ic_photos"
         android:drawablePadding="@dimen/padding_8"
