@@ -18,10 +18,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avengers.businesscardapp.dto.LoginResponse;
 import com.avengers.businesscardapp.dto.LoginUser;
 import com.avengers.businesscardapp.util.NetworkHelper;
 import com.avengers.businesscardapp.webservice.BusinessCardWebservice;
-import com.avengers.businesscardapp.dto.LoginResponse;
 
 import java.io.IOException;
 

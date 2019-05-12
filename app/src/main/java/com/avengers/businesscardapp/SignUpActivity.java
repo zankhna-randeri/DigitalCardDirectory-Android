@@ -14,10 +14,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avengers.businesscardapp.dto.GenericResponse;
 import com.avengers.businesscardapp.dto.SignUpUser;
 import com.avengers.businesscardapp.util.NetworkHelper;
 import com.avengers.businesscardapp.webservice.BusinessCardWebservice;
-import com.avengers.businesscardapp.dto.GenericResponse;
 
 import java.io.IOException;
 
