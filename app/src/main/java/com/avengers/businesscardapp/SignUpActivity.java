@@ -14,10 +14,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.avengers.businesscardapp.dto.SignupUser;
+import com.avengers.businesscardapp.dto.SignUpUser;
 import com.avengers.businesscardapp.util.NetworkHelper;
 import com.avengers.businesscardapp.webservice.BusinessCardWebservice;
-import com.avengers.businesscardapp.webservice.GenericResponse;
+import com.avengers.businesscardapp.dto.GenericResponse;
 
 import java.io.IOException;
 
@@ -55,7 +55,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         } else if (!pwd.equalsIgnoreCase(confirmPwd)) {
             showMsg(getResources().getString(R.string.password_match));
         } else {
-            SignupUser user = new SignupUser();
+            SignUpUser user = new SignUpUser();
             user.setFirstName(fName);
             user.setLastName(lName);
             user.setEmailId(emailId);
@@ -157,9 +157,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private class SignUpTask extends AsyncTask<Void, GenericResponse, GenericResponse> {
 
         private Context mContext;
-        private SignupUser user;
+        private SignUpUser user;
 
-        public SignUpTask(Context mContext, SignupUser user) {
+        public SignUpTask(Context mContext, SignUpUser user) {
             this.mContext = mContext;
             this.user = user;
         }

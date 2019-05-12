@@ -1,7 +1,10 @@
 package com.avengers.businesscardapp.webservice;
 
+import com.avengers.businesscardapp.dto.GenericResponse;
+import com.avengers.businesscardapp.dto.LoginResponse;
+import com.avengers.businesscardapp.dto.UploadCardResponse;
 import com.avengers.businesscardapp.dto.LoginUser;
-import com.avengers.businesscardapp.dto.SignupUser;
+import com.avengers.businesscardapp.dto.SignUpUser;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -16,7 +19,9 @@ import retrofit2.http.Part;
 
 public interface BusinessCardWebservice {
 
-    String BASE_URL = "http://10.0.2.2:8080";
+    //    String BASE_URL = "http://10.0.2.2:8080";
+    String BASE_URL = "http://10.252.55.140:8080";
+
 //    String BASE_URL = "http://10.15.232.131:8080";
 
 
@@ -26,7 +31,7 @@ public interface BusinessCardWebservice {
             .build();
 
     @POST("/userSignup")
-    Call<GenericResponse> registerUser(@Body SignupUser userRequest);
+    Call<GenericResponse> registerUser(@Body SignUpUser userRequest);
 
     @POST("/userLogin")
     Call<LoginResponse> loginUser(@Body LoginUser userLoginRequest);
@@ -36,7 +41,7 @@ public interface BusinessCardWebservice {
 
     @Multipart
     @POST("/cmpe277AvengersNER")
-    Call<GenericResponse> uploadCard
+    Call<UploadCardResponse> uploadCard
             (@Part MultipartBody.Part file,
              @Part("emailId") RequestBody emailId);
 
