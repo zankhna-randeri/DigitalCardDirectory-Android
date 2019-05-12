@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import com.avengers.businesscardapp.R;
 import com.avengers.businesscardapp.util.NetworkHelper;
 import com.avengers.businesscardapp.webservice.BusinessCardWebservice;
-import com.avengers.businesscardapp.webservice.GenericResponse;
+import com.avengers.businesscardapp.dto.GenericResponse;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
