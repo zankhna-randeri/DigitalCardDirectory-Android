@@ -45,4 +45,7 @@
     <string name="txt_select_photos">Select from Photos</string>
     <string name="txt_denied_camera">Application needs camera permission to click picture</string>
     <string name="txt_denied_photos">Application needs read permission to select photo</string>
+    <string name="txt_contact_name">Contact Name</string>
+    <string name="txt_org">Organization</string>
+    <string name="txt_contact_no">Contact No.</string>
 </resources>
