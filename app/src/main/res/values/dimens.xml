@@ -29,5 +29,7 @@
 
     <dimen name="card_height">225dp</dimen>
     <dimen name="card_width">300dp</dimen>
+    <dimen name="width_250">250dp</dimen>
+    <dimen name="card_edit_height">200dp</dimen>
     <dimen name="camera_button_width">50dp</dimen>
 </resources>
