@@ -1,16 +1,16 @@
 package com.avengers.businesscardapp.dto;
 
-public class SignupUser {
+public class SignUpUser {
 
     private String firstName;
     private String lastName;
     private String emailId;
     private String password;
 
-    public SignupUser() {
+    public SignUpUser() {
     }
 
-    public SignupUser(String firstName, String lastName, String emailId, String password) {
+    public SignUpUser(String firstName, String lastName, String emailId, String password) {
         super();
         this.firstName = firstName;
         this.lastName = lastName;

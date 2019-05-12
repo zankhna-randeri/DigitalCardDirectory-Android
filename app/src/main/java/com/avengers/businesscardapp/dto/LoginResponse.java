@@ -1,4 +1,4 @@
-package com.avengers.businesscardapp.webservice;
+package com.avengers.businesscardapp.dto;
 
 public class LoginResponse {
 
