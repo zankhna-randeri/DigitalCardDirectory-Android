@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditCardActivity">
+
+    <include
+        layout="@layout/toolbar_app"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_15"
+            android:layout_marginRight="@dimen/margin_15"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/padding_5">
+
+            <ImageView
+                android:id="@+id/img_edit_card"
+                android:layout_width="@dimen/card_width"
+                android:layout_height="@dimen/card_edit_height"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_card_placeholder" />
+
+
+            <TextView
+                style="@style/HeaderTextTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15"
+                android:text="@string/txt_contact_name"
+                android:textColor="@color/colorPrimary" />
+
+            <EditText
+                android:id="@+id/edt_name"
+                style="@style/HeaderTextTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName" />
+
+            <TextView
+                style="@style/HeaderTextTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15"
+                android:text="@string/txt_org"
+                android:textColor="@color/colorPrimary" />
+
+            <EditText
+                android:id="@+id/edt_contact_org"
+                style="@style/HeaderTextTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName" />
+
+            <TextView
+                style="@style/HeaderTextTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15"
+                android:text="@string/txt_hint_email"
+                android:textColor="@color/colorPrimary" />
+
+            <EditText
+                android:id="@+id/edt_contact_email"
+                style="@style/HeaderTextTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress" />
+
+            <TextView
+                style="@style/HeaderTextTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15"
+                android:text="@string/txt_contact_no"
+                android:textColor="@color/colorPrimary" />
+
+            <EditText
+                android:id="@+id/edt_contact_no"
+                style="@style/HeaderTextTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone" />
+
+            <TextView
+                style="@style/HeaderTextTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15"
+                android:text="@string/txt_notes"
+                android:textColor="@color/colorPrimary" />
+
+            <EditText
+                android:id="@+id/edt_contact_notes"
+                style="@style/HeaderTextTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
