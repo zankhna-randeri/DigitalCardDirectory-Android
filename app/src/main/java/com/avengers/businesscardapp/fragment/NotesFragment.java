@@ -88,7 +88,6 @@ public class NotesFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-
     private void showErrorMsg(String msg) {
         Toast.makeText(getActivity(), msg,
                 Toast.LENGTH_SHORT).show();
