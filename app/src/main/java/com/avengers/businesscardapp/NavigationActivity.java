@@ -24,7 +24,7 @@ import com.avengers.businesscardapp.fragment.MyCardFragment;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        MyCardFragment.OnFragmentInteractionListener, AddCardFragment.OnFragmentInteractionListener {
+        MyCardFragment.OnFragmentInteractionListener {
 
     private Context mContext;
     private Toolbar toolbar;
