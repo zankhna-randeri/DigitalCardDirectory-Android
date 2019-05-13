@@ -21,6 +21,13 @@
         <item name="android:textSize">@dimen/font_small</item>
     </style>
 
+    <style name="ListTextTheme" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/app_font</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/font_small</item>
+    </style>
+
     <style name="AppTitleTheme" parent="android:Widget.TextView">
         <item name="android:fontFamily">@font/app_font</item>
         <item name="android:textAllCaps">false</item>
