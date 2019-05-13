@@ -85,6 +85,12 @@ public class CardDetailActivity extends AppCompatActivity implements
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
     private void fetchCardDetail(Intent intent) {
         if (intent.getExtras() != null &&
                 getIntent().getExtras().containsKey(Constants.EXTRA_CARD_DETAIL)) {

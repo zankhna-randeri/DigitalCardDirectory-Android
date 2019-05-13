@@ -1,5 +1,6 @@
 package com.avengers.businesscardapp;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.avengers.businesscardapp.fragment.AddCardFragment;
+import com.avengers.businesscardapp.fragment.CardListFragment;
 import com.avengers.businesscardapp.fragment.MyCardFragment;
 
 
@@ -24,6 +26,7 @@ public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         MyCardFragment.OnFragmentInteractionListener, AddCardFragment.OnFragmentInteractionListener {
 
+    private Context mContext;
     private Toolbar toolbar;
     private TextView txtName, txtEmail;
     private TextView title;
@@ -33,7 +36,9 @@ public class NavigationActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        mContext = NavigationActivity.this;
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         emailId = sharedPrefs.getString("Email_Id", "");
         firstName = sharedPrefs.getString("First_Name", "");
         lastName = sharedPrefs.getString("Last_Name", "");
@@ -61,6 +66,8 @@ public class NavigationActivity extends AppCompatActivity
         txtEmail = header.findViewById(R.id.text_email);
         txtName.setText((firstName + " " + lastName));
         txtEmail.setText(emailId);
+        Fragment myCardsFragment = CardListFragment.newInstance(emailId);
+        setDefaultFragment(myCardsFragment);
     }
 
     private void setUpToolbar() {
@@ -83,10 +90,9 @@ public class NavigationActivity extends AppCompatActivity
             // Handle the camera action
             Fragment addCardFragment = AddCardFragment.newInstance(emailId);
             setDefaultFragment(addCardFragment);
-        } else if (id == R.id.nav_gallery) {
-            Fragment myCardsFragment = MyCardFragment.newInstance(emailId);
+        } else if (id == R.id.nav_my_cards) {
+            Fragment myCardsFragment = CardListFragment.newInstance(emailId);
             setDefaultFragment(myCardsFragment);
-
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -103,6 +109,12 @@ public class NavigationActivity extends AppCompatActivity
         transaction.replace(R.id.fragment_navigation, defaultFragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
     @Override
