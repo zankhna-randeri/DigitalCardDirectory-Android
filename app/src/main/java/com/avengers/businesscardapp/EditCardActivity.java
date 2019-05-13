@@ -104,16 +104,20 @@ public class EditCardActivity extends AppCompatActivity {
                 break;
             case R.id.menu_done:
                 if (isCardDetailValid()) {
-//                    String fileName = cardImageUri.getLastPathSegment();
                     String fileName = getFileName(cardImageUri);
                     Log.d(TAG, "fileName: " + fileName);
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
                     String userEmail = prefs.getString("Email_Id", "");
-                    saveCardDetails(edtName.getText().toString().trim(),
+                    if (saveCardDetails(edtName.getText().toString().trim(),
                             edtOrg.getText().toString().trim(),
                             edtEmail.getText().toString().trim(),
                             edtContactNo.getText().toString().trim(), fileName,
-                            userEmail, edtNotes.getText().toString().trim());
+                            userEmail, edtNotes.getText().toString().trim())) {
+                        finish();
+                        Intent intent = new Intent(mContext, NavigationActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
                 }
                 break;
             default:
@@ -162,15 +166,16 @@ public class EditCardActivity extends AppCompatActivity {
         return true;
     }
 
-    private void saveCardDetails(String name, String organization, String contactEmail,
-                                 String contactNumber, String fileName, String userEmail,
-                                 String notes) {
+    private boolean saveCardDetails(String name, String organization, String contactEmail,
+                                    String contactNumber, String fileName, String userEmail,
+                                    String notes) {
         DataControllerBusinessCard dataController = new DataControllerBusinessCard(getBaseContext());
         dataController.open();
-        dataController.insertCard(name, organization, contactEmail, contactNumber, fileName, userEmail,
-                notes);
+        long rowId = dataController
+                .insertCard(name, organization, contactEmail, contactNumber, fileName, userEmail,
+                        notes);
         dataController.close();
-
+        return rowId != -1;
     }
 
     private void showMsg(String msg) {
