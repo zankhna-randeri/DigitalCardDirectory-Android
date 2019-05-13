@@ -2,7 +2,6 @@ package com.avengers.businesscardapp.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -16,9 +15,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.avengers.businesscardapp.R;
+import com.avengers.businesscardapp.dto.GenericResponse;
 import com.avengers.businesscardapp.util.NetworkHelper;
 import com.avengers.businesscardapp.webservice.BusinessCardWebservice;
-import com.avengers.businesscardapp.dto.GenericResponse;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -37,21 +36,16 @@ public class CardFragment extends Fragment {
     private ImageView imgCard;
     private String appUserEmailId;
     private String cardName;
-    private OnFragmentInteractionListener mListener;
 
     public CardFragment() {
         // Required empty public constructor
     }
 
-    //    public static CardFragment newInstance(String cardName) {
-//        CardFragment fragment = new CardFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_CARD_NAME, cardName);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
-    public static CardFragment newInstance() {
+    public static CardFragment newInstance(String cardName) {
         CardFragment fragment = new CardFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_CARD_NAME, cardName);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -86,24 +80,6 @@ public class CardFragment extends Fragment {
                 .load(url)
                 .placeholder(R.mipmap.ic_launcher)
                 .into(imgCard);
-    }
-
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     private class DisplayCardTask extends AsyncTask<Void, String, String> {
@@ -147,18 +123,5 @@ public class CardFragment extends Fragment {
         }
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
+
 }
