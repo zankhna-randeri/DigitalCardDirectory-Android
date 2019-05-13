@@ -19,9 +19,10 @@ import retrofit2.http.Part;
 
 public interface BusinessCardWebservice {
 
-    //    String BASE_URL = "http://10.0.2.2:8080";
-    String BASE_URL = "http://10.252.55.140:8080";
-
+//    String BASE_URL = "http://10.0.2.2:8080";
+    String BASE_URL = "http://BusinessCardDirectory.us-west-2.elasticbeanstalk.com";
+//    String BASE_URL = "http://10.252.55.140:8080";
+//    String BASE_URL = "http://192.168.0.142:8080";
 //    String BASE_URL = "http://10.15.232.131:8080";
 
 
