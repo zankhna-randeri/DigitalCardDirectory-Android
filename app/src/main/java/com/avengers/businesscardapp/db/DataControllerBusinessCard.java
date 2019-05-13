@@ -13,17 +13,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataControllerBusinessCard {
+
+    public static final String DATABASE_NAME = "BusinessCard.db";
+    public static final int DATABASE_VERSION = 7;
+
     public static final String FIRST_NAME = "FirstName";
     public static final String LAST_NAME = "LastName";
     public static final String EMAIL_ID = "EmailId";
     public static final String PASSWORD = "Password";
     public static final String TABLE_NAME_CUSTOMER = "Customer_Info";
-    public static final String DATABASE_NAME = "BusinessCard.db";
-    public static final int DATABASE_VERSION = 7;
-    public static final String TABLE_CREATE = "create table Customer_Info (FirstName text not null, " +
-            " LastName text not null, EmailId text not null, Password text not null)";
+    public static final String TABLE_CREATE_CUSTOMER =
+            "create table Customer_Info (FirstName text not null, LastName text not null, " +
+                    "EmailId text not null, Password text not null)";
 
     //logic to add business card information to the DB
+    public static final String TABLE_NAME_CONTACT = "Contact_Info";
     public static final String CONTACT_ID = "ID";
     public static final String CONTACT_NAME = "ContactName";
     public static final String CONTACT_ORGANIZATION = "ContactOrganization";
@@ -32,7 +36,8 @@ public class DataControllerBusinessCard {
     public static final String USER_EMAIL = "UserEmail";
     public static final String FILE_NAME = "FileName";
     private static final String CONTACT_NOTES = "Notes";
-    public static final String TABLE_NAME_CONTACT = "Contact_Info";
+
+
     public static final String TABLE_CREATE_CONTACT = "create table Contact_Info " +
             "(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
             "UserEmail text not null, ContactName text not null, " +
@@ -147,7 +152,7 @@ public class DataControllerBusinessCard {
      * @return Notes
      */
     public String retrieveNotes(int cardId) {
-        String query = "SELECT * FROM Customer_Info WHERE " +
+        String query = "SELECT * FROM Contact_Info WHERE " +
                 CONTACT_ID + " = '" + cardId + "'";
         db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -215,7 +220,7 @@ public class DataControllerBusinessCard {
         @Override
         public void onCreate(SQLiteDatabase db) {
             try {
-                db.execSQL(TABLE_CREATE);
+                db.execSQL(TABLE_CREATE_CUSTOMER);
                 db.execSQL(TABLE_CREATE_CONTACT);
             } catch (SQLiteException e) {
                 e.printStackTrace();
