@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lyt_progress"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_progress"
+    android:gravity="center">
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        style="@style/TextDetailTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_marginLeft="@dimen/margin_8"
+        android:text="@string/txt_loading" />
+</LinearLayout>
