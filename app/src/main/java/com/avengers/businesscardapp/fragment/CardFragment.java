@@ -32,19 +32,21 @@ public class CardFragment extends Fragment {
     private final String TAG = "CardFragment";
     // the fragment initialization parameters
     private static final String ARG_CARD_NAME = "arg_card_name";
-
+    private static final String ARG_CARD_URL = "arg_card_url";
     private ImageView imgCard;
     private String appUserEmailId;
-    private String cardName;
+    private String fileName;
+    private String cardUrl;
 
     public CardFragment() {
         // Required empty public constructor
     }
 
-    public static CardFragment newInstance(String cardName) {
+    public static CardFragment newInstance(String fileName, String cardUrl) {
         CardFragment fragment = new CardFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_CARD_NAME, cardName);
+        args.putString(ARG_CARD_NAME, fileName);
+        args.putString(ARG_CARD_URL, cardUrl);
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,7 +55,8 @@ public class CardFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            cardName = getArguments().getParcelable(ARG_CARD_NAME);
+            fileName = getArguments().getString(ARG_CARD_NAME);
+            cardUrl = getArguments().getString(ARG_CARD_URL);
         }
     }
 
@@ -68,10 +71,11 @@ public class CardFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         imgCard = view.findViewById(R.id.img_card);
-        // Get email
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        appUserEmailId = sharedPrefs.getString("Email_Id", "");
-        new DisplayCardTask(getActivity().getApplicationContext()).execute();
+        if (cardUrl != null && !cardUrl.equals("")) {
+            loadImageFromUrl(cardUrl);
+        } else {
+            new DisplayCardTask(getActivity().getApplicationContext()).execute();
+        }
     }
 
 
@@ -93,15 +97,14 @@ public class CardFragment extends Fragment {
         @Override
         protected String doInBackground(Void... voids) {
             if (NetworkHelper.hasNetworkAccess(mContext)) {
+
                 BusinessCardWebservice webservice = BusinessCardWebservice
                         .retrofit.create(BusinessCardWebservice.class);
                 Call<GenericResponse> call = webservice.getCardUrl();
                 try {
                     GenericResponse response = call.execute().body();
-                    if (response != null) {
-                        if (response.getMessage() != null) {
-                            return response.getMessage();
-                        }
+                    if (response != null && response.getMessage() != null) {
+                        return response.getMessage();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -116,12 +119,13 @@ public class CardFragment extends Fragment {
         @Override
         protected void onPostExecute(String prefix) {
             super.onPostExecute(prefix);
-            appUserEmailId = "sunny@gmail.com";
-            cardName = "Card5.jpeg";
-            String url = prefix + "/" + appUserEmailId + "/" + cardName;
+            // Get email
+            SharedPreferences sharedPrefs = PreferenceManager
+                    .getDefaultSharedPreferences(getActivity());
+            appUserEmailId = sharedPrefs.getString("Email_Id", "");
+            // Create url
+            String url = prefix + "/" + appUserEmailId + "/" + fileName;
             loadImageFromUrl(url);
         }
     }
-
-
 }

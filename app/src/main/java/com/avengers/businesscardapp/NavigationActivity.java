@@ -2,7 +2,6 @@ package com.avengers.businesscardapp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -19,12 +18,10 @@ import android.widget.TextView;
 
 import com.avengers.businesscardapp.fragment.AddCardFragment;
 import com.avengers.businesscardapp.fragment.CardListFragment;
-import com.avengers.businesscardapp.fragment.MyCardFragment;
 
 
 public class NavigationActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        MyCardFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private Context mContext;
     private Toolbar toolbar;
@@ -115,10 +112,5 @@ public class NavigationActivity extends AppCompatActivity
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 }
