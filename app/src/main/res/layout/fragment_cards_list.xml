@@ -1,74 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".CardsListActivity">
+    android:layout_height="match_parent">
 
-    <include
-        layout="@layout/toolbar_app"
+    <EditText
+        android:id="@+id/edt_search"
+        style="@style/TextDetailTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" />
+        android:layout_margin="@dimen/margin_5"
+        android:hint="@string/txt_hint_search" />
 
-
-
-    <RelativeLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_cards"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
-        android:padding="@dimen/padding_5">
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/searchID"
-            android:text="Search..."/>
-
-        <TextView
-            android:id="@+id/img_user"
-            android:layout_width="@dimen/profile_img"
-            android:layout_height="@dimen/profile_img"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:background="#eaeaea"
-            android:gravity="center"
-            android:text="JD"
-            android:textAllCaps="true"
-            android:textColor="#9b9999"
-            android:textSize="@dimen/font_name_initial"
-            android:textStyle="bold"
-            android:layout_below="@+id/searchID"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_8"
-            android:layout_toEndOf="@+id/img_user"
-            android:layout_toRightOf="@id/img_user"
-            android:orientation="vertical"
-            android:weightSum="3"
-            android:layout_below="@+id/searchID">
-
-            <TextView
-                android:id="@+id/txt_name"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="John Doe"
-                android:textStyle="bold"
-                android:theme="@style/TextDetailTheme" />
-
-            <TextView
-                android:id="@+id/txt_org"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="Abby Organization"
-                android:textColor="#5C6BC0"
-                android:theme="@style/TextDetailTheme" />
-        </LinearLayout>
-
-    </RelativeLayout>
+        android:layout_height="match_parent"
+        android:layout_below="@id/edt_search"
+        android:layout_marginLeft="@dimen/margin_5"
+        android:layout_marginRight="@dimen/margin_5"
+        android:scrollbars="vertical" />
 
 </RelativeLayout>

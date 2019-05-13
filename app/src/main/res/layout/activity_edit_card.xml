@@ -98,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_15"
-                android:text="@string/txt_notes"
+                android:text="@string/txt_notes_opt"
                 android:textColor="@color/colorPrimary" />
 
             <EditText
