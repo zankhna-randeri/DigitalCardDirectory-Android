@@ -17,11 +17,12 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardViewHold
 
     List<Card> cards;
     private Context context;
+    private final OnItemClickListener listener;
 
-
-    public CardsAdapter(Context context, List<Card> cards) {
+    public CardsAdapter(Context context, List<Card> cards, OnItemClickListener listener) {
         this.cards = cards;
         this.context = context;
+        this.listener = listener;
     }
 
     @NonNull
@@ -38,6 +39,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardViewHold
         cardViewHolder.initials.setText(getInitials(card.getName()));
         cardViewHolder.name.setText(card.getName());
         cardViewHolder.organization.setText(card.getOrganization());
+        cardViewHolder.bind(cards.get(i), listener);
     }
 
     private String getInitials(String name) {
@@ -66,5 +68,18 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardViewHold
             name = cardItemView.findViewById(R.id.txt_name);
             organization = cardItemView.findViewById(R.id.txt_org);
         }
+
+        public void bind(final Card card, final OnItemClickListener listener) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(card);
+                }
+            });
+        }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Card item);
     }
 }
