@@ -5,8 +5,8 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_view_list_black_24dp"
+            android:id="@+id/nav_my_cards"
+            android:icon="@drawable/ic_view_list"
             android:title="@string/txt_my_cards" />
         <item
             android:id="@+id/nav_addCard"
