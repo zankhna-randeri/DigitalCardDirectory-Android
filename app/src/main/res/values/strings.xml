@@ -15,7 +15,7 @@
     <string name="success_msg">Customer Info Saved Successfully</string>
     <string name="password_match">Passowords Doesn\'t match</string>
     <string name="login_validation">Email Id and Password doesn\'t match. Please verify your credentials</string>
-    <string name="no_customer_record">No record with this Email. Please signup</string>
+    <string name="no_customer_record">No record with this Email. Please SignUp</string>
 
     <string name="title_activity_navigtion">NavigationActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -48,4 +48,8 @@
     <string name="txt_contact_name">Contact Name</string>
     <string name="txt_org">Organization</string>
     <string name="txt_contact_no">Contact No.</string>
+    <string name="txt_notes_opt">Notes (Optional)</string>
+    <string name="txt_err_edit_card">Please fill required details.</string>
+    <string name="txt_hint_search">Search...</string>
+    <string name="txt_loading">Loading</string>
 </resources>
