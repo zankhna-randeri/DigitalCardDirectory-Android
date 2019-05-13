@@ -17,7 +17,7 @@ public class DataControllerBusinessCard {
     public static final String LAST_NAME = "LastName";
     public static final String EMAIL_ID = "EmailId";
     public static final String PASSWORD = "Password";
-    public static final String TABLE_NAME = "Customer_Info";
+    public static final String TABLE_NAME_CUSTOMER = "Customer_Info";
     public static final String DATABASE_NAME = "BusinessCard.db";
     public static final int DATABASE_VERSION = 7;
     public static final String TABLE_CREATE = "create table Customer_Info (FirstName text not null, " +
@@ -167,7 +167,21 @@ public class DataControllerBusinessCard {
         content.put(LAST_NAME, lastName);
         content.put(EMAIL_ID, emailId);
         content.put(PASSWORD, password);
-        return db.insertOrThrow(TABLE_NAME, null, content);
+        return db.insertOrThrow(TABLE_NAME_CUSTOMER, null, content);
+    }
+
+    //method call to insert User records to the db
+    public long insertCard(String name, String organization, String contactEmail, String contactNumber,
+                           String fileName, String userEmail, String notes) {
+        ContentValues content = new ContentValues();
+        content.put(CONTACT_NAME, name);
+        content.put(CONTACT_ORGANIZATION, organization);
+        content.put(CONTACT_EMAIL, contactEmail);
+        content.put(CONTACT_NUMBER, contactNumber);
+        content.put(FILE_NAME, fileName);
+        content.put(USER_EMAIL, userEmail);
+        content.put(CONTACT_NOTES, notes);
+        return db.insertOrThrow(TABLE_NAME_CONTACT, null, content);
     }
 
     //method call for the sign up validation if the user already exists
