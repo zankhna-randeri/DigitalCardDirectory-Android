@@ -18,23 +18,21 @@
 
     <EditText
         android:id="@+id/edt_notes"
+        style="@style/TextDetailTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8"
-        android:background="@color/color_text_initial"
-        android:fontFamily="@font/app_font"
         android:hint="@string/txt_hint_notes"
-        android:padding="@dimen/padding_8"
         android:textColor="@android:color/black"
         android:textSize="@dimen/font_20" />
 
     <Button
         android:id="@+id/btn_update_notes"
-        style="@style/ButtonTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/margin_15"
-        android:text="@string/txt_update_notes" />
+        android:text="@string/txt_update_notes"
+        android:theme="@style/ButtonTheme" />
 
 </LinearLayout>
