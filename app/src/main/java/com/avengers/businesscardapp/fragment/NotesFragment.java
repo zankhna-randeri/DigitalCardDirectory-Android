@@ -1,8 +1,6 @@
 package com.avengers.businesscardapp.fragment;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -18,15 +16,8 @@ import android.widget.Toast;
 import com.avengers.businesscardapp.R;
 import com.avengers.businesscardapp.db.DataControllerBusinessCard;
 
-import okhttp3.RequestBody;
-
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link NotesFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link NotesFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Card Notes Fragment
  */
 public class NotesFragment extends Fragment implements View.OnClickListener {
 
@@ -36,7 +27,6 @@ public class NotesFragment extends Fragment implements View.OnClickListener {
 
     private EditText edtNotes;
     private Button btnUpdate;
-    private OnFragmentInteractionListener mListener;
 
     public NotesFragment() {
         // Required empty public constructor
@@ -87,23 +77,6 @@ public class NotesFragment extends Fragment implements View.OnClickListener {
 
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_update_notes) {
             if (edtNotes.getText().toString() != null &&
@@ -115,20 +88,6 @@ public class NotesFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 
     private void showErrorMsg(String msg) {
         Toast.makeText(getActivity(), msg,
