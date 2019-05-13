@@ -55,4 +55,6 @@
     <string name="menu_refer_card">Refer card</string>
     <string name="txt_confirm">Confirm</string>
     <string name="txt_delete_msg">Do you really want to delete this card?</string>
+    <string name="txt_dialog_title">Refer To:</string>
+    <string name="txt_success_refer">Card Referred Successfully.</string>
 </resources>
