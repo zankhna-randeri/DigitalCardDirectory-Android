@@ -1,6 +1,8 @@
 package com.avengers.businesscardapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.avengers.businesscardapp.db.DataControllerBusinessCard;
 import com.avengers.businesscardapp.dto.Card;
 import com.avengers.businesscardapp.fragment.CardFragment;
 import com.avengers.businesscardapp.fragment.ContactsFragment;
@@ -23,8 +26,7 @@ import com.avengers.businesscardapp.fragment.NotesFragment;
 import com.avengers.businesscardapp.util.Constants;
 
 public class CardDetailActivity extends AppCompatActivity implements
-        View.OnClickListener, ContactsFragment.OnFragmentInteractionListener,
-        CardFragment.OnFragmentInteractionListener {
+        View.OnClickListener, ContactsFragment.OnFragmentInteractionListener {
 
     private Toolbar toolbar;
     private TextView title;
@@ -44,8 +46,6 @@ public class CardDetailActivity extends AppCompatActivity implements
         mContext = CardDetailActivity.this;
         initView();
         fetchCardDetail(getIntent());
-        //TODO : remove below setSelected(btnContact);
-        setSelected(btnContacts);
     }
 
 
@@ -55,10 +55,26 @@ public class CardDetailActivity extends AppCompatActivity implements
             case android.R.id.home:
                 finish();
                 break;
+            case R.id.menu_delete_card:
+                confirmDelete();
+                break;
             default:
                 return false;
         }
         return false;
+    }
+
+    private void confirmDelete() {
+        new AlertDialog.Builder(mContext)
+                .setTitle(getString(R.string.txt_confirm))
+                .setMessage(getString(R.string.txt_delete_msg))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        removeCardFromDB(card.getCardId());
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null).show();
     }
 
     @Override
@@ -68,7 +84,6 @@ public class CardDetailActivity extends AppCompatActivity implements
         return true;
 
     }
-
 
     @Override
     public void onClick(View v) {
@@ -121,9 +136,7 @@ public class CardDetailActivity extends AppCompatActivity implements
         setSelected(btnCard);
         deselectButton(btnNotes);
         deselectButton(btnContacts);
-//        Fragment cardFragment = CardFragment.newInstance(card.getFileName());
-//        replaceFragment(cardFragment);
-        Fragment cardFragment = CardFragment.newInstance();
+        Fragment cardFragment = CardFragment.newInstance(card.getFileName());
         replaceFragment(cardFragment);
     }
 
@@ -139,9 +152,7 @@ public class CardDetailActivity extends AppCompatActivity implements
         setSelected(btnNotes);
         deselectButton(btnContacts);
         deselectButton(btnCard);
-        //TODO : uncomment below line
-//        Fragment contactsFragment = NotesFragment.newInstance(card.getCardId());
-        Fragment contactsFragment = NotesFragment.newInstance(1);
+        Fragment contactsFragment = NotesFragment.newInstance(card.getCardId());
         replaceFragment(contactsFragment);
     }
 
@@ -173,6 +184,17 @@ public class CardDetailActivity extends AppCompatActivity implements
         transaction.replace(R.id.fragment_card_detail, defaultFragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    private void removeCardFromDB(int cardId) {
+        DataControllerBusinessCard dataController = new DataControllerBusinessCard(mContext);
+        dataController.open();
+        dataController.deleteCard(cardId);
+        dataController.close();
+        Intent intent = new Intent(mContext, NavigationActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 
     @Override
