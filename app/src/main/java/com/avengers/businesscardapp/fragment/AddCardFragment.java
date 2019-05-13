@@ -3,7 +3,6 @@ package com.avengers.businesscardapp.fragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -12,8 +11,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -52,36 +49,31 @@ import static android.app.Activity.RESULT_OK;
  */
 public class AddCardFragment extends Fragment implements View.OnClickListener {
 
-    private static final String ARG_PARAM1 = "param1";
-    private final String ARG_PARAM2 = "param2";
+    private static final String ARG_EMAIL_ID = "args_emailId";
+
     private final int CAMERA_REQUEST = 2;
     private final int PHOTOS_REQUEST = 4;
 
     private final int REQUEST_IMAGE_CAPTURE = 1;
-    private final int REQUEST_GET_SINGLE_FILE = 3;
-    private final String TAG = "CardFragment";
+    private final int REQUEST_BROWSE_IMAGE = 3;
+    private final String TAG = "AddCardFragment";
 
     private Button cameraButton, btnPhotos;
     private ImageView cardImage;
 
     private String cardFilePath;
+    private String emailId;
     private Uri cardImageUri;
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
 
     public AddCardFragment() {
         // Required empty public constructor
     }
 
     // TODO: Rename and change types and number of parameters
-    public static AddCardFragment newInstance(String param1) {
+    public static AddCardFragment newInstance(String emailId) {
         AddCardFragment fragment = new AddCardFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        //args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_EMAIL_ID, emailId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -94,7 +86,6 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
@@ -102,68 +93,11 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
                 case REQUEST_IMAGE_CAPTURE:
                     handleCameraResponse(data);
                     break;
-                case REQUEST_GET_SINGLE_FILE:
+                case REQUEST_BROWSE_IMAGE:
                     handlePhotosResponse(data);
                     break;
-                default:
-                    break;
             }
         }
-    }
-
-    private void handlePhotosResponse(Intent data) {
-        cardImageUri = data.getData();
-        cardImage.setImageURI(cardImageUri);
-//        cardFilePath = getPathFromPhotoURL(selectedImageUri);
-        cardFilePath = getRealPathFromURI_API19(getActivity(), cardImageUri);
-        cardImage.setImageBitmap(BitmapFactory.decodeFile(cardFilePath));
-    }
-
-    private String getPathFromPhotoURL(Uri selectedImageUri) {
-        String result = null;
-        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-        if (getActivity() != null) {
-            Cursor cursor = getActivity().
-                    getContentResolver().
-                    query(selectedImageUri, filePathColumn,
-                            null, null, null);
-//                    query(selectedImageUri, proj, null, null, null);
-            if (cursor != null) {
-                cursor.moveToFirst();
-                int column_index = cursor.getColumnIndex(filePathColumn[0]);
-                result = cursor.getString(column_index);
-                cursor.close();
-            } else {
-                result = selectedImageUri.getPath();
-            }
-        }
-        return result;
-    }
-
-    public static String getRealPathFromURI_API19(Context context, Uri uri) {
-        String filePath = "";
-        String wholeID = DocumentsContract.getDocumentId(uri);
-
-        // Split at colon, use second item in the array
-        String id = wholeID.split(":")[1];
-
-        String[] column = {MediaStore.Images.Media.DATA};
-
-        // where id is equal to
-        String sel = MediaStore.Images.Media._ID + "=?";
-
-        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                column, sel, new String[]{id}, null);
-
-        int columnIndex = cursor.getColumnIndex(column[0]);
-
-        if (cursor.moveToFirst()) {
-            filePath = cursor.getString(columnIndex);
-        } else {
-            filePath = uri.getPath();
-        }
-        cursor.close();
-        return filePath;
     }
 
     private void handleCameraResponse(Intent data) {
@@ -210,8 +144,7 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            emailId = getArguments().getString(ARG_EMAIL_ID);
         }
         setHasOptionsMenu(true);
     }
@@ -328,18 +261,68 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
     }
 
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    private void handlePhotosResponse(Intent data) {
+        cardImageUri = data.getData();
+        cardImage.setImageURI(cardImageUri);
+        cardFilePath = getPathFromPhotoURL(cardImageUri);
+//        cardFilePath = getRealPathFromURI_API19(getActivity(), cardImageUri);
+        cardImage.setImageBitmap(BitmapFactory.decodeFile(cardFilePath));
     }
+
+    private String getPathFromPhotoURL(Uri selectedImageUri) {
+        String result = null;
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+        if (getActivity() != null) {
+            Cursor cursor = getActivity().
+                    getContentResolver().
+                    query(selectedImageUri, filePathColumn,
+                            null, null, null);
+//                    query(selectedImageUri, proj, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int column_index = cursor.getColumnIndex(filePathColumn[0]);
+                result = cursor.getString(column_index);
+                cursor.close();
+            } else {
+                result = selectedImageUri.getPath();
+            }
+        }
+        Log.d(TAG, "getPathFromPhotoURL: " + result);
+        return result;
+    }
+
+//    public static String getRealPathFromURI_API19(Context context, Uri uri) {
+//        String filePath = "";
+//        String wholeID = DocumentsContract.getDocumentId(uri);
+//
+//        // Split at colon, use second item in the array
+//        String id = wholeID.split(":")[1];
+//
+//        String[] column = {MediaStore.Images.Media.DATA};
+//
+//        // where id is equal to
+//        String sel = MediaStore.Images.Media._ID + "=?";
+//
+//        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//                column, sel, new String[]{id}, null);
+//
+//        int columnIndex = cursor.getColumnIndex(column[0]);
+//
+//        if (cursor.moveToFirst()) {
+//            filePath = cursor.getString(columnIndex);
+//        } else {
+//            filePath = uri.getPath();
+//        }
+//        cursor.close();
+//        return filePath;
+//    }
 
     private void openPhotos() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Select Picture"),
-                REQUEST_GET_SINGLE_FILE);
+                REQUEST_BROWSE_IMAGE);
     }
 
     private void showMsg(String msg) {
@@ -356,8 +339,7 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
 
         @Override
         protected UploadCardResponse doInBackground(Void... voids) {
-            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String emailId = sharedPrefs.getString("Email_Id", "");
+
             //Create a file object using file path
             File file = new File(cardFilePath);
             // Create a request body with file and image media type
