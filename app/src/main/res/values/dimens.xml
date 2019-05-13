@@ -6,12 +6,15 @@
     <dimen name="font_24">24sp</dimen>
     <dimen name="font_32">32sp</dimen>
     <dimen name="font_name_initial">54sp</dimen>
+    <dimen name="font_name_list_initial">20sp</dimen>
 
+    <dimen name="padding_2">2dp</dimen>
     <dimen name="padding_5">5dp</dimen>
     <dimen name="padding_8">8dp</dimen>
     <dimen name="padding_12">12dp</dimen>
     <dimen name="padding_20">20dp</dimen>
 
+    <dimen name="margin_3">3dp</dimen>
     <dimen name="margin_5">5dp</dimen>
     <dimen name="margin_8">8dp</dimen>
     <dimen name="margin_15">15dp</dimen>
@@ -32,4 +35,5 @@
     <dimen name="width_250">250dp</dimen>
     <dimen name="card_edit_height">200dp</dimen>
     <dimen name="camera_button_width">50dp</dimen>
+    <dimen name="list_profile_img">45dp</dimen>
 </resources>
