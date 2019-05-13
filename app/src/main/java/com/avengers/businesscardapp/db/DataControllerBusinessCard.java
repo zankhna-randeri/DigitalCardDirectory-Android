@@ -109,21 +109,22 @@ public class DataControllerBusinessCard {
      * @return list of cards current app user has stored
      */
     public List<Card> retrieveAllCardsInfo(String userEmail) {
-        String query = "SELECT * FROM Contact_Info WHERE UserEmail='" + userEmail + "'";
+        String query = "SELECT * FROM Contact_Info WHERE " + USER_EMAIL + "= '" + userEmail + "'";
         db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         List<Card> cards = new ArrayList<>();
-        if (cursor != null && cursor.moveToFirst()) {
-            Card card = new Card();
-            card.setCardId(cursor.getInt(0));
-            card.setName(cursor.getString(cursor.getColumnIndex(CONTACT_NAME)));
-            card.setOrganization(cursor.getString(cursor.getColumnIndex(CONTACT_ORGANIZATION)));
-            card.setEmailId(cursor.getString(cursor.getColumnIndex(CONTACT_EMAIL)));
-            card.setPhoneNumber(cursor.getString(cursor.getColumnIndex(CONTACT_NUMBER)));
-            card.setNotes(cursor.getString(cursor.getColumnIndex(CONTACT_NOTES)));
-            card.setFileName(cursor.getString(cursor.getColumnIndex(FILE_NAME)));
-            cards.add(card);
-            cursor.moveToNext();
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                Card card = new Card();
+                card.setCardId(cursor.getInt(0));
+                card.setName(cursor.getString(cursor.getColumnIndex(CONTACT_NAME)));
+                card.setOrganization(cursor.getString(cursor.getColumnIndex(CONTACT_ORGANIZATION)));
+                card.setEmailId(cursor.getString(cursor.getColumnIndex(CONTACT_EMAIL)));
+                card.setPhoneNumber(cursor.getString(cursor.getColumnIndex(CONTACT_NUMBER)));
+                card.setNotes(cursor.getString(cursor.getColumnIndex(CONTACT_NOTES)));
+                card.setFileName(cursor.getString(cursor.getColumnIndex(FILE_NAME)));
+                cards.add(card);
+            }
         }
         cursor.close();
         return cards;
@@ -189,6 +190,11 @@ public class DataControllerBusinessCard {
         return db.insertOrThrow(TABLE_NAME_CONTACT, null, content);
     }
 
+    public void deleteCard(int cardId) {
+        String args[] = new String[]{String.valueOf(cardId)};
+        db.delete(TABLE_NAME_CONTACT, CONTACT_ID + "=?", args);
+    }
+
     //method call for the sign up validation if the user already exists
     public String retrieveCustomerInfo(String emailId) {
         String existingEmailId = "";
@@ -234,7 +240,5 @@ public class DataControllerBusinessCard {
             db.execSQL("DROP TABLE IF EXISTS Contact_Info");
             onCreate(db);
         }
-
     }
-
 }
