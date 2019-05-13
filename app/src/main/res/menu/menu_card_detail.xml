@@ -2,8 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/new_game"
+        android:id="@+id/menu_delete_card"
         android:icon="@drawable/ic_delete"
         android:title="@string/menu_delete_card"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_refer_card"
+        android:icon="@drawable/ic_share"
+        android:title="@string/menu_refer_card"
         app:showAsAction="always" />
 </menu>
