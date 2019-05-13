@@ -190,9 +190,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 if (response.getResponseCode() != 200) {
                     showMsg(response.getMessage());
                 } else {
-
                     Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                     startActivity(intent);
+                    finish();
                 }
             }
         }

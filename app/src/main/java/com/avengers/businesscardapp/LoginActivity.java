@@ -197,6 +197,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     saveDataToPrefs(user.getEmailId(), response);
                     Intent intent = new Intent(LoginActivity.this, NavigationActivity.class);
                     startActivity(intent);
+                    finish();
                 }
             }
         }
