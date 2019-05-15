@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.avengers.businesscardapp.CardDetailActivity;
 import com.avengers.businesscardapp.R;
@@ -34,6 +36,8 @@ public class CardListFragment extends Fragment {
     private RecyclerView recyclerCardList;
     private List<Card> cards;
     private EditText edtSearch;
+    private TextView emptyView;
+    private RelativeLayout contentView;
     private CardsAdapter adpCards;
 
     public CardListFragment() {
@@ -74,7 +78,14 @@ public class CardListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         initView(view);
         cards = loadCardsFromDB();
-        displayCards(cards);
+        if (cards != null && cards.size() > 0) {
+            emptyView.setVisibility(View.GONE);
+            contentView.setVisibility(View.VISIBLE);
+            displayCards(cards);
+        } else {
+            contentView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void displayCards(final List<Card> cards) {
@@ -99,6 +110,8 @@ public class CardListFragment extends Fragment {
     }
 
     private void initView(View view) {
+        emptyView = view.findViewById(R.id.txt_empty);
+        contentView = view.findViewById(R.id.lyt_cards);
         edtSearch = view.findViewById(R.id.edt_search);
         recyclerCardList = view.findViewById(R.id.recycler_cards);
         recyclerCardList.setLayoutManager(new LinearLayoutManager(getActivity()));
