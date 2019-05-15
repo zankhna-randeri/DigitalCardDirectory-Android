@@ -15,13 +15,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.avengers.businesscardapp.dto.LoginResponse;
 import com.avengers.businesscardapp.dto.LoginUser;
 import com.avengers.businesscardapp.util.Constants;
 import com.avengers.businesscardapp.util.NetworkHelper;
+import com.avengers.businesscardapp.util.Utility;
 import com.avengers.businesscardapp.webservice.BusinessCardWebservice;
 
 import java.io.IOException;
@@ -35,7 +36,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Toolbar toolbar;
     private TextView title;
     private EditText edtEmail, edtPassword;
-    private Button btnSubmit, btnSignup;
+    private LinearLayout progress;
+    private TextView txtProgressMsg;
     private final String TAG = "SignUpActivity";
 
     @Override
@@ -60,12 +62,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void initView() {
+        progress = findViewById(R.id.lyt_progress);
+        txtProgressMsg = progress.findViewById(R.id.txt_progress_msg);
         toolbar = findViewById(R.id.toolbar);
         title = findViewById(R.id.toolbar_title);
         edtEmail = findViewById(R.id.edt_emailId);
         edtPassword = findViewById(R.id.edt_password);
-        btnSubmit = findViewById(R.id.btn_login_submit);
-        btnSignup = findViewById(R.id.btn_signup);
+        Button btnSubmit = findViewById(R.id.btn_login_submit);
+        Button btnSignup = findViewById(R.id.btn_signup);
         setUpToolbar();
         btnSubmit.setOnClickListener(this);
         btnSignup.setOnClickListener(this);
@@ -95,12 +99,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-            default:
-                return false;
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
         return false;
     }
@@ -111,11 +112,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         finish();
     }
 
-    private void showMsg(String msg) {
-        Toast.makeText(getApplicationContext(), msg,
-                Toast.LENGTH_SHORT).show();
-    }
-
     //On login validate the user credentials and navigate to the customer home page
     //if the login details was not a match display message to user to verify again
     public void handleLogin() {
@@ -124,7 +120,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String pwd = edtPassword.getText().toString();
 
         if (mailId.trim().isEmpty() || pwd.trim().isEmpty()) {
-            showMsg(getString(R.string.enter_login_info));
+            Utility.getInstance().showMsg(getApplicationContext(),
+                    getString(R.string.enter_login_info));
         } else {
             LoginUser user = new LoginUser();
             user.setEmailId(mailId);
@@ -175,9 +172,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         private Context mContext;
         private LoginUser user;
 
-        public LoginTask(Context mContext, LoginUser user) {
+        LoginTask(Context mContext, LoginUser user) {
             this.mContext = mContext;
             this.user = user;
+            progress.setVisibility(View.VISIBLE);
+            txtProgressMsg.setText(getString(R.string.txt_login_progress));
         }
 
         @Override
@@ -187,8 +186,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         .retrofit.create(BusinessCardWebservice.class);
                 Call<LoginResponse> call = webservice.loginUser(user);
                 try {
-                    LoginResponse response = call.execute().body();
-                    return response;
+                    return call.execute().body();
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.e(TAG, "LoginTask: " + e.getMessage());
@@ -203,8 +201,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         protected void onPostExecute(LoginResponse response) {
             super.onPostExecute(response);
             if (response != null && response.getMessage() != null) {
-                if (response.getResponseCode() != 200) {
-                    showMsg(response.getMessage());
+                if (response.getResponseCode() != Constants.RESPONSE_OK) {
+                    Utility.getInstance().showMsg(getApplicationContext(),
+                            response.getMessage());
                 } else {
                     saveDataToPrefs(user.getEmailId(), response);
                     Intent intent = new Intent(LoginActivity.this, NavigationActivity.class);
@@ -212,6 +211,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     finish();
                 }
             }
+            progress.setVisibility(View.GONE);
         }
     }
 
