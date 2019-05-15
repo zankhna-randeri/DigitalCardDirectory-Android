@@ -12,6 +12,12 @@
             android:id="@+id/nav_addCard"
             android:icon="@drawable/ic_add_a_photo_black_24dp"
             android:title="@string/txt_add_card" />
+
     </group>
+    <item
+        android:id="@+id/nav_logout"
+        android:checkable="true"
+        android:icon="@drawable/ic_logout"
+        android:title="@string/txt_logout" />
 
 </menu>
