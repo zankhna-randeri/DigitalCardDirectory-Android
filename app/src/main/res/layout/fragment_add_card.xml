@@ -1,40 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/img_camera"
-        android:layout_width="@dimen/card_width"
-        android:layout_height="@dimen/card_width"
-        android:layout_centerHorizontal="true"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_card_placeholder" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btn_camera"
-        android:layout_width="@dimen/width_250"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/img_camera"
-        android:layout_centerHorizontal="true"
-        android:drawableStart="@drawable/ic_camera"
-        android:drawableLeft="@drawable/ic_camera"
-        android:drawablePadding="@dimen/padding_8"
-        android:padding="@dimen/padding_8"
-        android:text="@string/txt_click_pic"
-        android:theme="@style/ButtonTheme" />
+        <ImageView
+            android:id="@+id/img_camera"
+            android:layout_width="@dimen/card_width"
+            android:layout_height="@dimen/card_width"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_card_placeholder" />
 
-    <Button
-        android:id="@+id/btn_photos"
-        android:layout_width="@dimen/width_250"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btn_camera"
-        android:layout_centerHorizontal="true"
-        android:drawableStart="@drawable/ic_photos"
-        android:drawableLeft="@drawable/ic_photos"
-        android:drawablePadding="@dimen/padding_8"
-        android:padding="@dimen/padding_8"
-        android:text="@string/txt_select_photos"
-        android:theme="@style/ButtonTheme" />
+        <Button
+            android:id="@+id/btn_camera"
+            android:layout_width="@dimen/width_250"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_camera"
+            android:layout_centerHorizontal="true"
+            android:drawableStart="@drawable/ic_camera"
+            android:drawableLeft="@drawable/ic_camera"
+            android:drawablePadding="@dimen/padding_8"
+            android:padding="@dimen/padding_8"
+            android:text="@string/txt_click_pic"
+            android:theme="@style/ButtonTheme" />
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/btn_photos"
+            android:layout_width="@dimen/width_250"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_camera"
+            android:layout_centerHorizontal="true"
+            android:drawableStart="@drawable/ic_photos"
+            android:drawableLeft="@drawable/ic_photos"
+            android:drawablePadding="@dimen/padding_8"
+            android:padding="@dimen/padding_8"
+            android:text="@string/txt_select_photos"
+            android:theme="@style/ButtonTheme" />
+
+    </RelativeLayout>
+
+    <include
+        layout="@layout/app_progress"
+        android:visibility="gone" />
+</FrameLayout>

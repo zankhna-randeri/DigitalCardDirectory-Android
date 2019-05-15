@@ -28,6 +28,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
@@ -42,6 +44,7 @@ import com.avengers.businesscardapp.R;
 import com.avengers.businesscardapp.dto.UploadCardResponse;
 import com.avengers.businesscardapp.util.Constants;
 import com.avengers.businesscardapp.util.NetworkHelper;
+import com.avengers.businesscardapp.util.Utility;
 import com.avengers.businesscardapp.webservice.BusinessCardWebservice;
 
 import java.io.ByteArrayOutputStream;
@@ -70,8 +73,9 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
     private final int REQUEST_BROWSE_IMAGE = 3;
     private final String TAG = "AddCardFragment";
 
-    private Button cameraButton, btnPhotos;
     private ImageView cardImage;
+    private LinearLayout progress;
+    private TextView txtProgressMsg;
 
     private String cardFilePath;
     private String appUserEmail;
@@ -103,9 +107,11 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        cameraButton = view.findViewById(R.id.btn_camera);
-        btnPhotos = view.findViewById(R.id.btn_photos);
+        Button cameraButton = view.findViewById(R.id.btn_camera);
+        Button btnPhotos = view.findViewById(R.id.btn_photos);
         cardImage = view.findViewById(R.id.img_camera);
+        progress = view.findViewById(R.id.lyt_progress);
+        txtProgressMsg = progress.findViewById(R.id.txt_progress_msg);
 
         cameraButton.setOnClickListener(this);
         btnPhotos.setOnClickListener(this);
@@ -116,7 +122,7 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_IMAGE_CAPTURE:
-                    handleCameraResponse(data);
+                    handleCameraResponse();
                     break;
                 case REQUEST_BROWSE_IMAGE:
                     handlePhotosResponse(data);
@@ -143,22 +149,23 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_done:
-                String fileName = getFileNameFromUri(cardImageUri);
-                Log.d(TAG, "onOptionsItemSelected : objectKey ---- " + fileName);
-                File file = null;
-                try {
-                    file = createFileFromUri(cardImageUri, fileName);
-                    String objectKey = appUserEmail + "/" + fileName;
-                    upload(file, objectKey);
-                } catch (IOException e) {
-                    Log.e(TAG, "onOptionsItemSelected: ", e);
-                    Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-                return true;
-            default:
-                break;
+        if (item.getItemId() == R.id.menu_done) {
+            String fileName = getFileNameFromUri(cardImageUri);
+            Log.d(TAG, "onOptionsItemSelected : objectKey ---- " + fileName);
+            File file;
+            try {
+                file = createFileFromUri(cardImageUri, fileName);
+                String objectKey = appUserEmail + "/" + fileName;
+                upload(file, objectKey);
+
+                progress.setVisibility(View.VISIBLE);
+                txtProgressMsg.setText(getString(R.string.txt_upload_progress));
+
+            } catch (IOException e) {
+                Log.e(TAG, "onOptionsItemSelected: ", e);
+                Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+            return true;
         }
         return false;
     }
@@ -178,47 +185,54 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
     }
 
     private String getFileNameFromUri(Uri uri) {
-        Cursor returnCursor = getActivity()
-                .getContentResolver()
-                .query(uri, null, null, null, null);
-        int nameIndex = 0;
-        if (returnCursor != null) {
-            nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-            returnCursor.moveToFirst();
-            String name = returnCursor.getString(nameIndex);
-            returnCursor.close();
-            return name;
-        } else {
-            return "";
+        if (getActivity() != null) {
+            Cursor returnCursor = getActivity()
+                    .getContentResolver()
+                    .query(uri, null, null, null, null);
+            int nameIndex;
+            if (returnCursor != null) {
+                nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                returnCursor.moveToFirst();
+                String name = returnCursor.getString(nameIndex);
+                returnCursor.close();
+                return name;
+            }
         }
+        return "";
     }
 
     private File createFileFromUri(Uri uri, String objectKey) throws IOException {
-        InputStream is = getActivity().getContentResolver().openInputStream(uri);
-        File file = new File(getActivity().getApplicationContext().getCacheDir(), objectKey);
-        file.createNewFile();
-        FileOutputStream fos = new FileOutputStream(file);
-        byte[] buf = new byte[2046];
-        int read = -1;
-        while ((read = is.read(buf)) != -1) {
-            fos.write(buf, 0, read);
+        File file = null;
+        if (getActivity() != null) {
+            InputStream is = getActivity().getContentResolver().openInputStream(uri);
+            file = new File(getActivity().getApplicationContext().getCacheDir(), objectKey);
+            if (file.createNewFile()) {
+                FileOutputStream fos = new FileOutputStream(file);
+                byte[] buf = new byte[2046];
+                int read;
+                while (is != null && (read = is.read(buf)) != -1) {
+                    fos.write(buf, 0, read);
+                }
+                fos.flush();
+                fos.close();
+            }
         }
-        fos.flush();
-        fos.close();
         return file;
     }
 
     private void createTransferUtility() {
-        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
-                getActivity().getApplicationContext(),
-                Constants.COGNITO_POOL_ID,
-                Regions.US_WEST_2
-        );
-        AmazonS3Client s3Client = new AmazonS3Client(credentialsProvider);
-        transferUtility = new TransferUtility(s3Client, getActivity().getApplicationContext());
+        if (getActivity() != null) {
+            CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                    getActivity().getApplicationContext(),
+                    Constants.COGNITO_POOL_ID,
+                    Regions.US_WEST_2
+            );
+            AmazonS3Client s3Client = new AmazonS3Client(credentialsProvider);
+            transferUtility = new TransferUtility(s3Client, getActivity().getApplicationContext());
+        }
     }
 
-    void upload(final File file, final String objectKey) {
+    private void upload(final File file, final String objectKey) {
         TransferObserver transferObserver = transferUtility.upload(
                 Constants.BUCKET_NAME,
                 objectKey,
@@ -230,7 +244,8 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
             public void onStateChanged(int id, TransferState state) {
                 Log.d(TAG, "onStateChanged: " + state);
                 if (TransferState.COMPLETED.equals(state)) {
-                    Toast.makeText(getActivity(), "Image uploaded", Toast.LENGTH_SHORT).show();
+//                    progress.setVisibility(View.GONE);
+//                    Toast.makeText(getActivity(), "Image uploaded", Toast.LENGTH_SHORT).show();
                     new UploadCardTask(getActivity(), file.getName()).execute();
                 }
             }
@@ -242,13 +257,14 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onError(int id, Exception ex) {
                 Log.e(TAG, "onError: ", ex);
+                progress.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-    private void handleCameraResponse(Intent data) {
+    private void handleCameraResponse() {
         File file = new File(mCurrentPhotoPath);
         Bitmap photo = null;
         try {
@@ -263,8 +279,6 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
         }
 //        Bitmap photo = (Bitmap) data.getExtras().get("data");
 //        cardImage.setImageBitmap(photo);
-
-
 //        Uri tempUri = getImageUri(getActivity().getApplicationContext(), photo);
         cardImageUri = getImageUri(getActivity().getApplicationContext(), photo);
         cardImage.setImageURI(cardImageUri);
@@ -346,14 +360,16 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openCamera();
                 } else {
-                    showMsg(getString(R.string.txt_denied_camera));
+                    Utility.getInstance().showMsg(getActivity().getApplicationContext(),
+                            getString(R.string.txt_denied_camera));
                 }
                 break;
             case PHOTOS_REQUEST:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openCamera();
                 } else {
-                    showMsg(getString(R.string.txt_denied_photos));
+                    Utility.getInstance().showMsg(getActivity().getApplicationContext(),
+                            getString(R.string.txt_denied_photos));
                 }
                 break;
         }
@@ -383,7 +399,7 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = null;
+        String timeStamp;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         } else {
@@ -450,15 +466,15 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
 
         Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 column, sel, new String[]{id}, null);
-
-        int columnIndex = cursor.getColumnIndex(column[0]);
-
-        if (cursor.moveToFirst()) {
-            filePath = cursor.getString(columnIndex);
-        } else {
-            filePath = uri.getPath();
+        if (cursor != null) {
+            int columnIndex = cursor.getColumnIndex(column[0]);
+            if (cursor.moveToFirst()) {
+                filePath = cursor.getString(columnIndex);
+            } else {
+                filePath = uri.getPath();
+            }
+            cursor.close();
         }
-        cursor.close();
         return filePath;
     }
 
@@ -470,17 +486,12 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
                 REQUEST_BROWSE_IMAGE);
     }
 
-    private void showMsg(String msg) {
-        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-    }
-
-
     private class UploadCardTask extends AsyncTask<Void, UploadCardResponse, UploadCardResponse> {
 
         private Context mContext;
         private String fileName;
 
-        public UploadCardTask(Context mContext, String fileName) {
+        UploadCardTask(Context mContext, String fileName) {
             this.mContext = mContext;
             this.fileName = fileName;
         }
@@ -504,8 +515,7 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
 //                Call<UploadCardResponse> call = webservice.uploadCard(filePart, email);
                 Call<UploadCardResponse> call = webservice.uploadCard(fileName, appUserEmail);
                 try {
-                    UploadCardResponse response = call.execute().body();
-                    return response;
+                    return call.execute().body();
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.e(TAG, "handleActionRequestQuestion: " + e.getMessage());
@@ -519,12 +529,15 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
         @Override
         protected void onPostExecute(UploadCardResponse response) {
             super.onPostExecute(response);
+            progress.setVisibility(View.GONE);
             if (response != null) {
                 Intent editIntent = new Intent(getActivity(), EditCardActivity.class);
                 editIntent.putExtra(Constants.EXTRA_CARD_DETAIL, response);
                 editIntent.putExtra(Constants.EXTRA_IMG_URI, cardImageUri);
                 startActivity(editIntent);
                 Log.d(TAG, "Card Parse detail: " + response.toString());
+                Utility.getInstance().showMsg(getActivity().getApplicationContext(),
+                        getString(R.string.txt_upload_success));
             }
         }
     }

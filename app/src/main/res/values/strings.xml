@@ -62,4 +62,6 @@
     <string name="txt_msg_email">Please Enter EmailId</string>
     <string name="txt_login_progress">Login In Progress</string>
     <string name="txt_signup_progress">Registering User</string>
+    <string name="txt_upload_progress">Uploading Card</string>
+    <string name="txt_upload_success">Card Uploaded Successfully</string>
 </resources>
