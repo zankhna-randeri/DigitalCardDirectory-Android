@@ -7,9 +7,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.avengers.businesscardapp.CardDetailActivity;
 import com.avengers.businesscardapp.R;
@@ -25,11 +28,13 @@ import java.util.List;
  */
 public class CardListFragment extends Fragment {
     private static final String ARG_EMAILS_ID = "args_emailId";
-
+    private final String TAG = "CardListFragment";
     private String emailId;
 
     private RecyclerView recyclerCardList;
     private List<Card> cards;
+    private EditText edtSearch;
+    private CardsAdapter adpCards;
 
     public CardListFragment() {
         // Required empty public constructor
@@ -73,7 +78,7 @@ public class CardListFragment extends Fragment {
     }
 
     private void displayCards(final List<Card> cards) {
-        CardsAdapter adpCards = new CardsAdapter(getActivity(), cards, new CardsAdapter.OnItemClickListener() {
+        adpCards = new CardsAdapter(getActivity(), cards, new CardsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Card item) {
                 Intent intent = new Intent(getActivity(), CardDetailActivity.class);
@@ -94,8 +99,24 @@ public class CardListFragment extends Fragment {
     }
 
     private void initView(View view) {
+        edtSearch = view.findViewById(R.id.edt_search);
         recyclerCardList = view.findViewById(R.id.recycler_cards);
         recyclerCardList.setLayoutManager(new LinearLayoutManager(getActivity()));
-    }
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adpCards.filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
 }

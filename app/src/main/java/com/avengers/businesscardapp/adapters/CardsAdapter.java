@@ -11,16 +11,19 @@ import android.widget.TextView;
 import com.avengers.businesscardapp.R;
 import com.avengers.businesscardapp.dto.Card;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardViewHolder> {
 
     List<Card> cards;
+    List<Card> cardsCopy;
     private Context context;
     private final OnItemClickListener listener;
 
     public CardsAdapter(Context context, List<Card> cards, OnItemClickListener listener) {
         this.cards = cards;
+        this.cardsCopy = new ArrayList<>(cards);
         this.context = context;
         this.listener = listener;
     }
@@ -55,6 +58,22 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardViewHold
     @Override
     public int getItemCount() {
         return cards.size();
+    }
+
+    public void filter(String text) {
+        text = text.toLowerCase();
+        cards.clear();
+        if (text.isEmpty()) {
+            cards.addAll(cardsCopy);
+        } else {
+            text = text.toLowerCase();
+            for (Card card : cardsCopy) {
+                if (card.getName().toLowerCase().contains(text)) {
+                    cards.add(card);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     public class CardViewHolder extends RecyclerView.ViewHolder {
