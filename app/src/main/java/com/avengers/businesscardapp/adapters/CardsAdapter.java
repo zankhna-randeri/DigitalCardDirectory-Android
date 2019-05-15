@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.avengers.businesscardapp.R;
 import com.avengers.businesscardapp.dto.Card;
+import com.avengers.businesscardapp.util.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,20 +40,11 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardViewHold
     @Override
     public void onBindViewHolder(@NonNull CardViewHolder cardViewHolder, int i) {
         Card card = cards.get(i);
-        cardViewHolder.initials.setText(getInitials(card.getName()));
+        cardViewHolder.initials.setText(Utility.getInstance().
+                getInitials(card.getName()));
         cardViewHolder.name.setText(card.getName());
         cardViewHolder.organization.setText(card.getOrganization());
         cardViewHolder.bind(cards.get(i), listener);
-    }
-
-    private String getInitials(String name) {
-        String[] names = name.split(" ");
-        if (names.length > 0) {
-            String initials = (names.length > 1) ? "" + names[0].charAt(0) + names[1].charAt(0) :
-                    "" + names[0].charAt(0);
-            return initials;
-        }
-        return "";
     }
 
     @Override
@@ -76,19 +68,19 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardViewHold
         notifyDataSetChanged();
     }
 
-    public class CardViewHolder extends RecyclerView.ViewHolder {
+    class CardViewHolder extends RecyclerView.ViewHolder {
         TextView initials;
         TextView name;
         TextView organization;
 
-        public CardViewHolder(@NonNull View cardItemView) {
+        CardViewHolder(@NonNull View cardItemView) {
             super(cardItemView);
             initials = cardItemView.findViewById(R.id.txt_initials);
             name = cardItemView.findViewById(R.id.txt_name);
             organization = cardItemView.findViewById(R.id.txt_org);
         }
 
-        public void bind(final Card card, final OnItemClickListener listener) {
+        void bind(final Card card, final OnItemClickListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

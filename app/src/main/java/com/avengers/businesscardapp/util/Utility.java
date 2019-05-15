@@ -17,4 +17,14 @@ public class Utility {
         Toast.makeText(context, msg,
                 Toast.LENGTH_SHORT).show();
     }
+
+    public String getInitials(String name) {
+        String[] names = name.split(" ");
+        if (names.length > 0) {
+            String initials = (names.length > 1) ? "" + names[0].charAt(0) + names[1].charAt(0) :
+                    "" + names[0].charAt(0);
+            return initials;
+        }
+        return "";
+    }
 }
