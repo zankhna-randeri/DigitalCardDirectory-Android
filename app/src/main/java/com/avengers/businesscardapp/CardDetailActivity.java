@@ -35,6 +35,7 @@ import com.avengers.businesscardapp.fragment.ContactsFragment;
 import com.avengers.businesscardapp.fragment.NotesFragment;
 import com.avengers.businesscardapp.util.Constants;
 import com.avengers.businesscardapp.util.NetworkHelper;
+import com.avengers.businesscardapp.util.Utility;
 import com.avengers.businesscardapp.webservice.BusinessCardWebservice;
 
 import java.io.IOException;
@@ -53,6 +54,7 @@ public class CardDetailActivity extends AppCompatActivity implements
     private Button btnNotes;
     private TextView txtName;
     private TextView txtOrganization;
+    private TextView txtInitials;
 
     private Card card;
     private String appUserEmail;
@@ -120,11 +122,14 @@ public class CardDetailActivity extends AppCompatActivity implements
         if (intent.getExtras() != null &&
                 getIntent().getExtras().containsKey(Constants.EXTRA_CARD_DETAIL)) {
             card = getIntent().getExtras().getParcelable(Constants.EXTRA_CARD_DETAIL);
-            txtName.setText(card.getName());
-            txtOrganization.setText(card.getOrganization());
-            setSelected(btnContacts);
-            Fragment contactsFragment = ContactsFragment.newInstance(card);
-            setDefaultFragment(contactsFragment);
+            if (card != null) {
+                txtInitials.setText(Utility.getInstance().getInitials(card.getName()));
+                txtName.setText(card.getName());
+                txtOrganization.setText(card.getOrganization());
+                setSelected(btnContacts);
+                Fragment contactsFragment = ContactsFragment.newInstance(card);
+                setDefaultFragment(contactsFragment);
+            }
         }
     }
 
@@ -245,7 +250,8 @@ public class CardDetailActivity extends AppCompatActivity implements
                 if (!TextUtils.isEmpty(edtToEmail.getText())) {
                     new ReferCardTask(mContext, edtToEmail.getText().toString()).execute();
                 } else {
-                    //TODO : show toast msg
+                    Utility.getInstance()
+                            .showMsg(getApplicationContext(), getString(R.string.txt_msg_email));
                 }
             }
         });
@@ -257,7 +263,7 @@ public class CardDetailActivity extends AppCompatActivity implements
         private Context mContext;
         private String toEmail;
 
-        public ReferCardTask(Context mContext, String email) {
+        ReferCardTask(Context mContext, String email) {
             this.mContext = mContext;
             this.toEmail = email;
         }

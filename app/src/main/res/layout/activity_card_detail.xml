@@ -24,7 +24,6 @@
             android:layout_alignParentLeft="true"
             android:background="@color/color_bg_initials"
             android:gravity="center"
-            android:text="JD"
             android:textAllCaps="true"
             android:textColor="@color/color_text_initial"
             android:textSize="@dimen/font_name_initial"
@@ -45,7 +44,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="John Doe"
                 android:textStyle="bold"
                 android:theme="@style/TextDetailTheme" />
 
@@ -55,7 +53,6 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/margin_8"
                 android:layout_weight="1"
-                android:text="Abby Organization"
                 android:textColor="#5C6BC0"
                 android:theme="@style/TextDetailTheme" />
         </LinearLayout>
