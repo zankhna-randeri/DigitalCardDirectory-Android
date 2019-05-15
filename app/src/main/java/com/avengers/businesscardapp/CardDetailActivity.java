@@ -139,6 +139,7 @@ public class CardDetailActivity extends AppCompatActivity implements
         btnCard = findViewById(R.id.btn_card);
         btnContacts = findViewById(R.id.btn_contacts);
         btnNotes = findViewById(R.id.btn_notes);
+        txtInitials = findViewById(R.id.txt_initials);
         txtName = findViewById(R.id.txt_name);
         txtOrganization = findViewById(R.id.txt_org);
         setUpToolbar();
