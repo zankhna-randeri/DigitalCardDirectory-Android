@@ -1,6 +1,7 @@
 package com.avengers.businesscardapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -18,6 +19,8 @@ import android.widget.TextView;
 
 import com.avengers.businesscardapp.fragment.AddCardFragment;
 import com.avengers.businesscardapp.fragment.CardListFragment;
+import com.avengers.businesscardapp.util.Constants;
+import com.avengers.businesscardapp.util.Utillity;
 
 
 public class NavigationActivity extends AppCompatActivity
@@ -82,19 +85,30 @@ public class NavigationActivity extends AppCompatActivity
         String emailId = sharedPrefs.getString("Email_Id", "");
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.nav_addCard) {
-            // Handle the camera action
-            Fragment addCardFragment = AddCardFragment.newInstance(emailId);
-            setDefaultFragment(addCardFragment);
-        } else if (id == R.id.nav_my_cards) {
-            Fragment myCardsFragment = CardListFragment.newInstance(emailId);
-            setDefaultFragment(myCardsFragment);
+        switch (item.getItemId()) {
+            case R.id.nav_addCard:
+                // Handle the camera action
+                Fragment addCardFragment = AddCardFragment.newInstance(emailId);
+                setDefaultFragment(addCardFragment);
+                break;
+            case R.id.nav_my_cards:
+                Fragment myCardsFragment = CardListFragment.newInstance(emailId);
+                setDefaultFragment(myCardsFragment);
+                break;
+            case R.id.nav_logout:
+                logout();
+                break;
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
     private void setDefaultFragment(Fragment defaultFragment) {
@@ -108,9 +122,16 @@ public class NavigationActivity extends AppCompatActivity
         transaction.commit();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    private void logout() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(Constants.PREFS_LOGIN, false);
+        editor.apply();
+        Utillity.showMsg(getApplicationContext(),
+                getString(R.string.txt_logout_done));
+        Intent intent = new Intent(NavigationActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
         finish();
     }
 }

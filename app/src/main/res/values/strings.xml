@@ -58,4 +58,5 @@
     <string name="txt_dialog_title">Refer To:</string>
     <string name="txt_success_refer">Card Referred Successfully.</string>
     <string name="txt_logout">Logout</string>
+    <string name="txt_logout_done">You are logged out</string>
 </resources>

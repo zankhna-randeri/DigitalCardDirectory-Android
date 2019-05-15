@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.avengers.businesscardapp.dto.LoginResponse;
 import com.avengers.businesscardapp.dto.LoginUser;
+import com.avengers.businesscardapp.util.Constants;
 import com.avengers.businesscardapp.util.NetworkHelper;
 import com.avengers.businesscardapp.webservice.BusinessCardWebservice;
 
@@ -41,10 +42,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        initView();
-        ActivityCompat.requestPermissions(this, new String[]{
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-        }, REQUEST_CODE);
+        if (isAlreadyLoggedIn()) {
+            Intent intent = new Intent(LoginActivity.this, NavigationActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            initView();
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            }, REQUEST_CODE);
+        }
+    }
+
+    private boolean isAlreadyLoggedIn() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        return preferences.getBoolean(Constants.PREFS_LOGIN, false);
     }
 
     private void initView() {
@@ -210,6 +222,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editor.putString("Email_Id", emailId);
         editor.putString("First_Name", response.getFirstName());
         editor.putString("Last_Name", response.getLastName());
+
+        // keep user logged in
+        editor.putBoolean(Constants.PREFS_LOGIN, true);
         editor.apply();
     }
 }
