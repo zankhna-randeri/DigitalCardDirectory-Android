@@ -14,68 +14,73 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <RelativeLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:padding="@dimen/padding_20">
+            android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/img_logo"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_centerHorizontal="true"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:scaleType="fitXY"
-                android:src="@mipmap/ic_launcher" />
+                android:gravity="center"
+                android:padding="@dimen/padding_20">
 
-            <TextView
-                android:id="@+id/txt_app_title"
-                style="@style/AppTitleTheme"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/img_logo"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/margin_15"
-                android:text="@string/app_name" />
+                <ImageView
+                    android:id="@+id/img_logo"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/ic_launcher" />
 
-            <EditText
-                android:id="@+id/edt_emailId"
-                style="@style/TextDetailTheme"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txt_app_title"
-                android:layout_marginTop="@dimen/margin_30"
-                android:hint="@string/txt_hint_email"
-                android:inputType="textEmailAddress" />
+                <TextView
+                    android:id="@+id/txt_app_title"
+                    style="@style/AppTitleTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/img_logo"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/margin_15"
+                    android:text="@string/app_name" />
 
-            <EditText
-                android:id="@+id/edt_password"
-                style="@style/TextDetailTheme"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/edt_emailId"
-                android:hint="@string/txt_password"
-                android:inputType="textPassword" />
+                <EditText
+                    android:id="@+id/edt_emailId"
+                    style="@style/TextDetailTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_app_title"
+                    android:layout_marginTop="@dimen/margin_30"
+                    android:hint="@string/txt_hint_email"
+                    android:inputType="textEmailAddress" />
 
-            <Button
-                android:id="@+id/btn_login_submit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/edt_password"
-                android:layout_marginTop="@dimen/margin_15"
-                android:text="@string/txt_login"
-                android:theme="@style/ButtonTheme" />
+                <EditText
+                    android:id="@+id/edt_password"
+                    style="@style/TextDetailTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/edt_emailId"
+                    android:hint="@string/txt_password"
+                    android:inputType="textPassword" />
 
-            <Button
-                android:id="@+id/btn_signup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/btn_login_submit"
-                android:text="@string/txt_signup_msg"
-                android:theme="@style/FlatButton" />
-        </RelativeLayout>
+                <Button
+                    android:id="@+id/btn_login_submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/edt_password"
+                    android:layout_marginTop="@dimen/margin_15"
+                    android:text="@string/txt_login"
+                    android:theme="@style/ButtonTheme" />
+
+                <Button
+                    android:id="@+id/btn_signup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_login_submit"
+                    android:text="@string/txt_signup_msg"
+                    android:theme="@style/FlatButton" />
+            </RelativeLayout>
+        </ScrollView>
     </LinearLayout>
 
     <include
