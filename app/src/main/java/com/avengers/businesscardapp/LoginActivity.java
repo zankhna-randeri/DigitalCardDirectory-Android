@@ -24,9 +24,11 @@ import com.avengers.businesscardapp.util.Constants;
 import com.avengers.businesscardapp.util.NetworkHelper;
 import com.avengers.businesscardapp.util.Utility;
 import com.avengers.businesscardapp.webservice.BusinessCardWebservice;
+import com.crashlytics.android.Crashlytics;
 
 import java.io.IOException;
 
+import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -43,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_login);
         if (isAlreadyLoggedIn()) {
             Intent intent = new Intent(LoginActivity.this, NavigationActivity.class);
