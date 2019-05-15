@@ -60,4 +60,5 @@
     <string name="txt_logout">Logout</string>
     <string name="txt_logout_done">You are logged out</string>
     <string name="txt_msg_email">Please Enter EmailId</string>
+    <string name="txt_login_progress">Login In Progress</string>
 </resources>
