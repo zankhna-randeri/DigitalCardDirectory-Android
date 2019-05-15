@@ -10,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.avengers.businesscardapp.R;
 import com.avengers.businesscardapp.db.DataControllerBusinessCard;
+import com.avengers.businesscardapp.util.Utility;
 
 /**
  * Card Notes Fragment
@@ -73,24 +73,24 @@ public class NotesFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         if (v.getId() == R.id.btn_update_notes) {
             if (!TextUtils.isEmpty(edtNotes.getText())) {
-                updateNotesInDb(edtNotes.getText().toString());
+                int result = updateNotesInDb(edtNotes.getText().toString());
+                if (result >= 0) {
+                    Utility.getInstance().showMsg(getActivity().getApplicationContext(),
+                            getString(R.string.txt_notes_success));
+                }
             } else {
-                showErrorMsg(getString(R.string.txt_err_notes));
+                Utility.getInstance().showMsg(getActivity().getApplicationContext(),
+                        getString(R.string.txt_err_notes));
             }
         }
     }
 
-    private void showErrorMsg(String msg) {
-        Toast.makeText(getActivity(), msg,
-                Toast.LENGTH_SHORT).show();
-
-    }
-
-    private void updateNotesInDb(String notes) {
+    private int updateNotesInDb(String notes) {
         DataControllerBusinessCard dataController = new DataControllerBusinessCard(getActivity());
         dataController.open();
-        dataController.updateNotes(cardId, notes);
+        int result = dataController.updateNotes(cardId, notes);
         dataController.close();
+        return result;
     }
 
     private String fetchNoteFromDb(int cardId) {
