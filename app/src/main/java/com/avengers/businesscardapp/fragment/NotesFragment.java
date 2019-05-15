@@ -1,11 +1,10 @@
 package com.avengers.businesscardapp.fragment;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,6 @@ public class NotesFragment extends Fragment implements View.OnClickListener {
 
     private static final String ARG_CARD_ID = "arg_cardId";
     private int cardId;
-    private String appUserEmailId;
 
     private EditText edtNotes;
     private Button btnUpdate;
@@ -66,11 +64,6 @@ public class NotesFragment extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         edtNotes = view.findViewById(R.id.edt_notes);
         btnUpdate = view.findViewById(R.id.btn_update_notes);
-
-        // Get email
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        appUserEmailId = sharedPrefs.getString("Email_Id", "");
-
         btnUpdate.setOnClickListener(this);
         edtNotes.setText(fetchNoteFromDb(cardId));
     }
@@ -79,8 +72,7 @@ public class NotesFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_update_notes) {
-            if (edtNotes.getText().toString() != null &&
-                    !edtNotes.getText().toString().trim().isEmpty()) {
+            if (!TextUtils.isEmpty(edtNotes.getText())) {
                 updateNotesInDb(edtNotes.getText().toString());
             } else {
                 showErrorMsg(getString(R.string.txt_err_notes));
