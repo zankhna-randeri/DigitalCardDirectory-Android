@@ -11,12 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.avengers.businesscardapp.dto.GenericResponse;
 import com.avengers.businesscardapp.dto.SignUpUser;
 import com.avengers.businesscardapp.util.NetworkHelper;
+import com.avengers.businesscardapp.util.Utility;
 import com.avengers.businesscardapp.webservice.BusinessCardWebservice;
 
 import java.io.IOException;
@@ -27,33 +28,33 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     private Toolbar toolbar;
     private TextView title;
-    private Context mContext;
     private EditText edtFname, edtLname, edtEmail, edtPassword, edtConfirmPassword;
-    private Button btnSubmit, btnCancel;
-    private String fName, lName, emailId, pwd, confirmPwd;
     private final String TAG = "SignUpActivity";
+    private LinearLayout progress;
+    private TextView txtProgressMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        mContext = SignUpActivity.this;
         initView();
     }
 
     public void saveCustomerDetails() {
-        fName = edtFname.getText().toString();
-        lName = edtLname.getText().toString();
-        emailId = edtEmail.getText().toString();
-        pwd = edtPassword.getText().toString();
-        confirmPwd = edtConfirmPassword.getText().toString();
+        String fName = edtFname.getText().toString();
+        String lName = edtLname.getText().toString();
+        String emailId = edtEmail.getText().toString();
+        String pwd = edtPassword.getText().toString();
+        String confirmPwd = edtConfirmPassword.getText().toString();
 
         if (fName.trim().isEmpty() || lName.trim().isEmpty() ||
                 emailId.trim().isEmpty() || pwd.trim().isEmpty() ||
                 confirmPwd.trim().isEmpty()) {
-            showMsg(getResources().getString(R.string.enter_all_signup_fields));
+            Utility.getInstance().showMsg(getApplicationContext(),
+                    getResources().getString(R.string.enter_all_signup_fields));
         } else if (!pwd.equalsIgnoreCase(confirmPwd)) {
-            showMsg(getResources().getString(R.string.password_match));
+            Utility.getInstance().showMsg(getApplicationContext(),
+                    getResources().getString(R.string.password_match));
         } else {
             SignUpUser user = new SignUpUser();
             user.setFirstName(fName);
@@ -95,6 +96,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 //    }
 
     private void initView() {
+        progress = findViewById(R.id.lyt_progress);
+        txtProgressMsg = progress.findViewById(R.id.txt_progress_msg);
         toolbar = findViewById(R.id.toolbar);
         title = findViewById(R.id.toolbar_title);
         edtFname = findViewById(R.id.edt_first_name);
@@ -102,16 +105,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         edtEmail = findViewById(R.id.edt_email);
         edtPassword = findViewById(R.id.edt_password);
         edtConfirmPassword = findViewById(R.id.edt_confirm_password);
-        btnSubmit = findViewById(R.id.btn_submit);
-        btnCancel = findViewById(R.id.btn_cancel);
+        Button btnSubmit = findViewById(R.id.btn_submit);
+        Button btnCancel = findViewById(R.id.btn_cancel);
         setUpToolbar();
         btnSubmit.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
-    }
-
-    private void showMsg(String msg) {
-        Toast.makeText(getApplicationContext(), msg,
-                Toast.LENGTH_SHORT).show();
     }
 
     private void setUpToolbar() {
@@ -138,12 +136,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-            default:
-                return false;
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
         return false;
     }
@@ -159,9 +154,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         private Context mContext;
         private SignUpUser user;
 
-        public SignUpTask(Context mContext, SignUpUser user) {
+        SignUpTask(Context mContext, SignUpUser user) {
             this.mContext = mContext;
             this.user = user;
+            progress.setVisibility(View.VISIBLE);
+            txtProgressMsg.setText(getString(R.string.txt_signup_progress));
         }
 
         @Override
@@ -171,8 +168,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         .retrofit.create(BusinessCardWebservice.class);
                 Call<GenericResponse> call = webservice.registerUser(user);
                 try {
-                    GenericResponse response = call.execute().body();
-                    return response;
+                    return call.execute().body();
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.e(TAG, "SignUpTask: " + e.getMessage());
@@ -188,13 +184,17 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             super.onPostExecute(response);
             if (response != null && response.getMessage() != null) {
                 if (response.getResponseCode() != 200) {
-                    showMsg(response.getMessage());
+                    Utility.getInstance().showMsg(getApplicationContext(),
+                            response.getMessage());
                 } else {
+                    Utility.getInstance().showMsg(getApplicationContext(),
+                            getString(R.string.signup_success_msg));
                     Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                     startActivity(intent);
                     finish();
                 }
             }
+            progress.setVisibility(View.GONE);
         }
     }
 }
