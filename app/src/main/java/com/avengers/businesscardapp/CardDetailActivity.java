@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -15,6 +14,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,12 +38,11 @@ import com.avengers.businesscardapp.util.NetworkHelper;
 import com.avengers.businesscardapp.webservice.BusinessCardWebservice;
 
 import java.io.IOException;
-import java.util.Locale;
 
 import retrofit2.Call;
 
 public class CardDetailActivity extends AppCompatActivity implements
-        View.OnClickListener, ContactsFragment.OnFragmentInteractionListener {
+        View.OnClickListener {
 
     private final String TAG = "CardDetailActivity";
     private Toolbar toolbar;
@@ -57,7 +56,6 @@ public class CardDetailActivity extends AppCompatActivity implements
 
     private Card card;
     private String appUserEmail;
-    private String cardUrl = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +146,7 @@ public class CardDetailActivity extends AppCompatActivity implements
         setSelected(btnCard);
         deselectButton(btnNotes);
         deselectButton(btnContacts);
-        Fragment cardFragment = CardFragment.newInstance(card.getFileName(), cardUrl);
+        Fragment cardFragment = CardFragment.newInstance(card.getFileName());
         replaceFragment(cardFragment);
     }
 
@@ -244,7 +242,7 @@ public class CardDetailActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                if (!edtToEmail.getText().toString().trim().isEmpty()) {
+                if (!TextUtils.isEmpty(edtToEmail.getText())) {
                     new ReferCardTask(mContext, edtToEmail.getText().toString()).execute();
                 } else {
                     //TODO : show toast msg
@@ -271,20 +269,20 @@ public class CardDetailActivity extends AppCompatActivity implements
                         .retrofit.create(BusinessCardWebservice.class);
                 try {
                     // Fetch cloudfront url
-                    Call<GenericResponse> call = webservice.getCardUrl();
-                    GenericResponse response = call.execute().body();
-                    cardUrl = response.getMessage() + "/" +
-                            appUserEmail + "/" + card.getFileName();
+//                    Call<GenericResponse> call = webservice.getCardUrl();
+//                    GenericResponse response = call.execute().body();
+//                    cardUrl = response.getMessage() + "/" +
+//                            appUserEmail + "/" + card.getFileName();
 
                     // Call refercard api
-                    call = webservice.referCard(toEmail,
+                    Call<GenericResponse> call = webservice.referCard(toEmail,
                             appUserEmail,
                             card.getFileName(),
                             card.getName(),
                             card.getEmailId(),
                             card.getOrganization(),
-                            card.getPhoneNumber(), cardUrl);
-                    response = call.execute().body();
+                            card.getPhoneNumber());
+                    GenericResponse response = call.execute().body();
                     if (response != null && response.getMessage() != null) {
                         return response.getMessage();
                     }
@@ -311,8 +309,4 @@ public class CardDetailActivity extends AppCompatActivity implements
                 Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
 }
