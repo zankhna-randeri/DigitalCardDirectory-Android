@@ -32,21 +32,18 @@ public class CardFragment extends Fragment {
     private final String TAG = "CardFragment";
     // the fragment initialization parameters
     private static final String ARG_CARD_NAME = "arg_card_name";
-    private static final String ARG_CARD_URL = "arg_card_url";
     private ImageView imgCard;
     private String appUserEmailId;
     private String fileName;
-    private String cardUrl;
 
     public CardFragment() {
         // Required empty public constructor
     }
 
-    public static CardFragment newInstance(String fileName, String cardUrl) {
+    public static CardFragment newInstance(String fileName) {
         CardFragment fragment = new CardFragment();
         Bundle args = new Bundle();
         args.putString(ARG_CARD_NAME, fileName);
-        args.putString(ARG_CARD_URL, cardUrl);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,7 +53,6 @@ public class CardFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             fileName = getArguments().getString(ARG_CARD_NAME);
-            cardUrl = getArguments().getString(ARG_CARD_URL);
         }
     }
 
@@ -71,11 +67,11 @@ public class CardFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         imgCard = view.findViewById(R.id.img_card);
-        if (cardUrl != null && !cardUrl.equals("")) {
-            loadImageFromUrl(cardUrl);
-        } else {
-            new DisplayCardTask(getActivity().getApplicationContext()).execute();
-        }
+//        if (cardUrl != null && !cardUrl.equals("")) {
+//            loadImageFromUrl(cardUrl);
+//        } else {
+        new DisplayCardTask(getActivity().getApplicationContext()).execute();
+//        }
     }
 
 
