@@ -42,11 +42,16 @@ public interface BusinessCardWebservice {
     @GET("/getCloudFrontUrl")
     Call<GenericResponse> getCardUrl();
 
-    @Multipart
+//    @Multipart
+//    @POST("/cmpe277AvengersNER")
+//    Call<UploadCardResponse> uploadCard
+//            (@Part MultipartBody.Part file,
+//             @Part("emailId") RequestBody emailId);
+
+    @FormUrlEncoded
     @POST("/cmpe277AvengersNER")
-    Call<UploadCardResponse> uploadCard
-            (@Part MultipartBody.Part file,
-             @Part("emailId") RequestBody emailId);
+    Call<UploadCardResponse> uploadCard(@Field("fileName") String fileName,
+                                        @Field("emailId") String emailId);
 
     @FormUrlEncoded
     @POST("/businessCardReferral")
