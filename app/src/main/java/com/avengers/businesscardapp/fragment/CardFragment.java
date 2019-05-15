@@ -124,7 +124,9 @@ public class CardFragment extends Fragment {
                     .getDefaultSharedPreferences(getActivity());
             appUserEmailId = sharedPrefs.getString("Email_Id", "");
             // Create url
+            Log.d(TAG, "DisplayCardTask : prefix ----- " + prefix);
             String url = prefix + "/" + appUserEmailId + "/" + fileName;
+            Log.d(TAG, "DisplayCardTask : url ----- " + url);
             loadImageFromUrl(url);
         }
     }
