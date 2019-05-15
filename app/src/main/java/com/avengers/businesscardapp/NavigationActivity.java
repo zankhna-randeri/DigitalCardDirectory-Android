@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.avengers.businesscardapp.fragment.AddCardFragment;
 import com.avengers.businesscardapp.fragment.CardListFragment;
 import com.avengers.businesscardapp.util.Constants;
-import com.avengers.businesscardapp.util.Utillity;
+import com.avengers.businesscardapp.util.Utility;
 
 
 public class NavigationActivity extends AppCompatActivity
@@ -28,7 +28,6 @@ public class NavigationActivity extends AppCompatActivity
 
     private Context mContext;
     private Toolbar toolbar;
-    private TextView txtName, txtEmail;
     private TextView title;
     private String emailId, firstName, lastName;
 
@@ -62,8 +61,8 @@ public class NavigationActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View header = navigationView.getHeaderView(0);
-        txtName = header.findViewById(R.id.text_name);
-        txtEmail = header.findViewById(R.id.text_email);
+        TextView txtName = header.findViewById(R.id.text_name);
+        TextView txtEmail = header.findViewById(R.id.text_email);
         txtName.setText((firstName + " " + lastName));
         txtEmail.setText(emailId);
         Fragment myCardsFragment = CardListFragment.newInstance(emailId);
@@ -127,7 +126,7 @@ public class NavigationActivity extends AppCompatActivity
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(Constants.PREFS_LOGIN, false);
         editor.apply();
-        Utillity.showMsg(getApplicationContext(),
+        Utility.getInstance().showMsg(getApplicationContext(),
                 getString(R.string.txt_logout_done));
         Intent intent = new Intent(NavigationActivity.this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
