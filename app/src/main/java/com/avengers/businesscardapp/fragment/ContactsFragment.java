@@ -1,7 +1,6 @@
 package com.avengers.businesscardapp.fragment;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -40,8 +39,6 @@ public class ContactsFragment extends Fragment implements View.OnClickListener {
     private ImageButton btnMail;
 
     private Card card;
-
-    private OnFragmentInteractionListener mListener;
 
     public ContactsFragment() {
         // Required empty public constructor
@@ -96,31 +93,27 @@ public class ContactsFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_call:
                 makeCall();
                 break;
             case R.id.btn_send_mail:
-//                sendMail();
+                sendMail();
                 break;
+        }
+    }
+
+    private void sendMail() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("message/rfc822");
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{txtEmail.getText().toString()});
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Business Card Mail");
+        intent.putExtra(Intent.EXTRA_TEXT, "Type your mail here");
+        try {
+            startActivity(Intent.createChooser(intent, "Send mail"));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(getActivity(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -144,21 +137,6 @@ public class ContactsFragment extends Fragment implements View.OnClickListener {
         } else {
             showErrorMsg(getResources().getString(R.string.txt_err_empty_call));
         }
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 
     private boolean isPackageExist(Intent intent) {
