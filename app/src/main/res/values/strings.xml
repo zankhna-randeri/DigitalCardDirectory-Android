@@ -67,4 +67,5 @@
     <string name="txt_card_save_success">Card Saved Successfully</string>
     <string name="txt_err_no_img">Please Click or Select Card Image</string>
     <string name="txt_notes_success">Notes Updated Successfully</string>
+    <string name="txt_no_cards">No Cards</string>
 </resources>

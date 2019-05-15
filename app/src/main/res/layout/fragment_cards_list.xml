@@ -1,23 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/edt_search"
-        style="@style/TextDetailTheme"
+    <RelativeLayout
+        android:id="@+id/lyt_cards"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_5"
-        android:hint="@string/txt_hint_search" />
+        android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_cards"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/edt_search"
-        android:layout_marginLeft="@dimen/margin_5"
-        android:layout_marginRight="@dimen/margin_5"
-        android:scrollbars="vertical" />
+        <EditText
+            android:id="@+id/edt_search"
+            style="@style/TextDetailTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_5"
+            android:hint="@string/txt_hint_search" />
 
-</RelativeLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_cards"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/edt_search"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:layout_marginRight="@dimen/margin_5"
+            android:scrollbars="vertical" />
+
+    </RelativeLayout>
+
+    <include
+        layout="@layout/empty_view"
+        android:visibility="gone" />
+</FrameLayout>

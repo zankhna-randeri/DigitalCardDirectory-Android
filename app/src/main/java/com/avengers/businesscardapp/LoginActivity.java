@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText edtEmail, edtPassword;
     private LinearLayout progress;
     private TextView txtProgressMsg;
-    private final String TAG = "SignUpActivity";
+    private final String TAG = "LoginActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
