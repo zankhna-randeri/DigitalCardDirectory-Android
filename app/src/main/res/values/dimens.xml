@@ -4,7 +4,7 @@
     <dimen name="font_20">20sp</dimen>
     <dimen name="font_22">22sp</dimen>
     <dimen name="font_24">24sp</dimen>
-    <dimen name="font_32">32sp</dimen>
+    <dimen name="font_28">28sp</dimen>
     <dimen name="font_name_initial">54sp</dimen>
     <dimen name="font_name_list_initial">20sp</dimen>
 

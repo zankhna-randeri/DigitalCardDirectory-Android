@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Business Card</string>
+    <string name="app_name">Digital Cards Directory</string>
     <string name="txt_card_detail">Card Details</string>
     <string name="txt_contact">Contact</string>
     <string name="txt_card">Card</string>
