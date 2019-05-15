@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.provider.OpenableColumns;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,11 +23,12 @@ import android.widget.Toast;
 import com.avengers.businesscardapp.db.DataControllerBusinessCard;
 import com.avengers.businesscardapp.dto.UploadCardResponse;
 import com.avengers.businesscardapp.util.Constants;
+import com.avengers.businesscardapp.util.Utility;
 
 public class EditCardActivity extends AppCompatActivity {
 
+
     private final String TAG = "EditCardActivity";
-    private UploadCardResponse cardResponse;
     private Uri cardImageUri;
     private Context mContext;
 
@@ -65,9 +67,11 @@ public class EditCardActivity extends AppCompatActivity {
     private void getIntentData(Intent intent) {
         Bundle extras = intent.getExtras();
         if (extras != null && extras.containsKey(Constants.EXTRA_CARD_DETAIL)) {
-            cardResponse = extras.getParcelable(Constants.EXTRA_CARD_DETAIL);
+            UploadCardResponse cardResponse = extras.getParcelable(Constants.EXTRA_CARD_DETAIL);
             cardImageUri = extras.getParcelable(Constants.EXTRA_IMG_URI);
-            displayCardDetail(cardImageUri, cardResponse);
+            if (cardResponse != null) {
+                displayCardDetail(cardImageUri, cardResponse);
+            }
         }
     }
 
@@ -103,15 +107,19 @@ public class EditCardActivity extends AppCompatActivity {
                 break;
             case R.id.menu_done:
                 if (isCardDetailValid()) {
-                    String fileName = getFileName(cardImageUri);
+                    String fileName = getFileNameFromUri(cardImageUri);
                     Log.d(TAG, "fileName: " + fileName);
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-                    String userEmail = prefs.getString("Email_Id", "");
+                    String userEmail = prefs.getString(Constants.PREFS_EMAIL_ID, "");
                     if (saveCardDetails(edtName.getText().toString().trim(),
                             edtOrg.getText().toString().trim(),
                             edtEmail.getText().toString().trim(),
-                            edtContactNo.getText().toString().trim(), fileName,
-                            userEmail, edtNotes.getText().toString().trim())) {
+                            edtContactNo.getText().toString().trim(),
+                            fileName,
+                            userEmail,
+                            edtNotes.getText().toString().trim())) {
+                        Utility.getInstance().showMsg(getApplicationContext(),
+                                getString(R.string.txt_card_save_success));
                         finish();
                         Intent intent = new Intent(mContext, NavigationActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -131,35 +139,28 @@ public class EditCardActivity extends AppCompatActivity {
         finish();
     }
 
-    private String getFileName(Uri uri) {
-        String result = null;
-        if (uri.getScheme().equals("content")) {
-            Cursor cursor = getContentResolver().query(uri,
-                    null, null, null, null);
-            try {
-                if (cursor != null && cursor.moveToFirst()) {
-                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                }
-            } finally {
-                cursor.close();
-            }
+    private String getFileNameFromUri(Uri uri) {
+        Cursor returnCursor = getContentResolver()
+                .query(uri, null, null, null, null);
+        int nameIndex = 0;
+        if (returnCursor != null) {
+            nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+            returnCursor.moveToFirst();
+            String name = returnCursor.getString(nameIndex);
+            returnCursor.close();
+            return name;
+        } else {
+            return "";
         }
-        if (result == null) {
-            result = uri.getPath();
-            int cut = result.lastIndexOf('/');
-            if (cut != -1) {
-                result = result.substring(cut + 1);
-            }
-        }
-        return result;
     }
 
     private boolean isCardDetailValid() {
-        if (edtName.getText().toString().trim().isEmpty() ||
-                edtContactNo.getText().toString().trim().isEmpty() ||
-                edtEmail.getText().toString().trim().isEmpty() ||
-                edtOrg.getText().toString().trim().isEmpty()) {
-            showMsg(getString(R.string.txt_err_edit_card));
+        if (TextUtils.isEmpty(edtName.getText()) ||
+                TextUtils.isEmpty(edtContactNo.getText()) ||
+                TextUtils.isEmpty(edtEmail.getText()) ||
+                TextUtils.isEmpty(edtOrg.getText())) {
+            Utility.getInstance().showMsg(getApplicationContext(),
+                    getString(R.string.txt_err_edit_card));
             return false;
         }
         return true;
@@ -175,10 +176,5 @@ public class EditCardActivity extends AppCompatActivity {
                         notes);
         dataController.close();
         return rowId != -1;
-    }
-
-    private void showMsg(String msg) {
-        Toast.makeText(getApplicationContext(), msg,
-                Toast.LENGTH_SHORT).show();
     }
 }
