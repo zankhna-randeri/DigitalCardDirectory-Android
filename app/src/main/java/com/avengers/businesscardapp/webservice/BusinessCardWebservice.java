@@ -6,8 +6,6 @@ import com.avengers.businesscardapp.dto.LoginUser;
 import com.avengers.businesscardapp.dto.SignUpUser;
 import com.avengers.businesscardapp.dto.UploadCardResponse;
 
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -15,14 +13,13 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 
 public interface BusinessCardWebservice {
 
     //    String BASE_URL = "http://10.0.2.2:8080";
-    String BASE_URL = "http://BusinessCardDirectory.us-west-2.elasticbeanstalk.com";
+//    String BASE_URL = "http://BusinessCardDirectory.us-west-2.elasticbeanstalk.com";
+    String BASE_URL = "https://sumanthravipati-sjsu.online";
 //    String BASE_URL = "http://10.252.55.140:8080";
 //    String BASE_URL = "http://192.168.0.142:8080";
 //    String BASE_URL = "http://10.15.232.131:8080";
@@ -61,8 +58,6 @@ public interface BusinessCardWebservice {
                                     @Field("contactName") String contactName,
                                     @Field("contactEmailId") String contactEmail,
                                     @Field("organization") String org,
-                                    @Field("contactNumber") String contactNo,
-                                    @Field("cloudFrontURL") String cloudFront);
-
+                                    @Field("contactNumber") String contactNo);
 
 }
