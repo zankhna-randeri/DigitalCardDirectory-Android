@@ -151,25 +151,28 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_done) {
-            if (cardImageUri != null && uploadCardTask == null) {
-                String fileName = getFileNameFromUri(cardImageUri);
-                Log.d(TAG, "onOptionsItemSelected : objectKey ---- " + fileName);
-                File file;
-                try {
-                    file = createFileFromUri(cardImageUri, fileName);
-                    String objectKey = appUserEmail + "/" + fileName;
-                    upload(file, objectKey);
+            if (uploadCardTask == null || (uploadCardTask.isCancelled() ||
+                    uploadCardTask.getStatus() == AsyncTask.Status.FINISHED)) {
+                if (cardImageUri != null) {
+                    String fileName = getFileNameFromUri(cardImageUri);
+                    Log.d(TAG, "onOptionsItemSelected : objectKey ---- " + fileName);
+                    File file;
+                    try {
+                        file = createFileFromUri(cardImageUri, fileName);
+                        String objectKey = appUserEmail + "/" + fileName;
+                        upload(file, objectKey);
 
-                    progress.setVisibility(View.VISIBLE);
-                    txtProgressMsg.setText(getString(R.string.txt_upload_progress));
+                        progress.setVisibility(View.VISIBLE);
+                        txtProgressMsg.setText(getString(R.string.txt_upload_progress));
 
-                } catch (IOException e) {
-                    Log.e(TAG, "onOptionsItemSelected: ", e);
-                    Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        Log.e(TAG, "onOptionsItemSelected: ", e);
+                        Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Utility.getInstance().showMsg(getActivity().getApplicationContext(),
+                            getString(R.string.txt_err_no_img));
                 }
-            } else {
-                Utility.getInstance().showMsg(getActivity().getApplicationContext(),
-                        getString(R.string.txt_err_no_img));
             }
             return true;
         }
@@ -432,59 +435,59 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
     private void handlePhotosResponse(Intent data) {
         cardImageUri = data.getData();
         cardImage.setImageURI(cardImageUri);
-//        cardFilePath = getPathFromPhotoURL(cardImageUri);
+        cardFilePath = getPathFromPhotoURL(cardImageUri);
         Log.d(TAG, "handlePhotosResponse: cardImageUri ------ " + cardImageUri);
-        cardFilePath = getRealPathFromURI_API19(getActivity(), cardImageUri);
+//        cardFilePath = getRealPathFromURI_API19(getActivity(), cardImageUri);
 //        cardImage.setImageBitmap(BitmapFactory.decodeFile(cardFilePath));
     }
 
-//    private String getPathFromPhotoURL(Uri selectedImageUri) {
-//        String result = null;
-//        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-//        if (getActivity() != null) {
-//            Cursor cursor = getActivity().
-//                    getContentResolver().
-//                    query(selectedImageUri, filePathColumn,
-//                            null, null, null);
-////                    query(selectedImageUri, proj, null, null, null);
-//            if (cursor != null) {
-//                cursor.moveToFirst();
-//                int column_index = cursor.getColumnIndex(filePathColumn[0]);
-//                result = cursor.getString(column_index);
-//                cursor.close();
-//            } else {
-//                result = selectedImageUri.getPath();
-//            }
-//        }
-//        Log.d(TAG, "getPathFromPhotoURL: " + result);
-//        return result;
-//    }
-
-    public static String getRealPathFromURI_API19(Context context, Uri uri) {
-        String filePath = "";
-        String wholeID = DocumentsContract.getDocumentId(uri);
-
-        // Split at colon, use second item in the array
-        String id = wholeID.split(":")[1];
-
-        String[] column = {MediaStore.Images.Media.DATA};
-
-        // where id is equal to
-        String sel = MediaStore.Images.Media._ID + "=?";
-
-        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                column, sel, new String[]{id}, null);
-        if (cursor != null) {
-            int columnIndex = cursor.getColumnIndex(column[0]);
-            if (cursor.moveToFirst()) {
-                filePath = cursor.getString(columnIndex);
+    private String getPathFromPhotoURL(Uri selectedImageUri) {
+        String result = null;
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+        if (getActivity() != null) {
+            Cursor cursor = getActivity().
+                    getContentResolver().
+                    query(selectedImageUri, filePathColumn,
+                            null, null, null);
+//                    query(selectedImageUri, proj, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int column_index = cursor.getColumnIndex(filePathColumn[0]);
+                result = cursor.getString(column_index);
+                cursor.close();
             } else {
-                filePath = uri.getPath();
+                result = selectedImageUri.getPath();
             }
-            cursor.close();
         }
-        return filePath;
+        Log.d(TAG, "getPathFromPhotoURL: " + result);
+        return result;
     }
+
+//    public static String getRealPathFromURI_API19(Context context, Uri uri) {
+//        String filePath = "";
+//        String wholeID = DocumentsContract.getDocumentId(uri);
+//
+//        // Split at colon, use second item in the array
+//        String id = wholeID.split(":")[1];
+//
+//        String[] column = {MediaStore.Images.Media.DATA};
+//
+//        // where id is equal to
+//        String sel = MediaStore.Images.Media._ID + "=?";
+//
+//        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//                column, sel, new String[]{id}, null);
+//        if (cursor != null) {
+//            int columnIndex = cursor.getColumnIndex(column[0]);
+//            if (cursor.moveToFirst()) {
+//                filePath = cursor.getString(columnIndex);
+//            } else {
+//                filePath = uri.getPath();
+//            }
+//            cursor.close();
+//        }
+//        return filePath;
+//    }
 
     private void openPhotos() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
