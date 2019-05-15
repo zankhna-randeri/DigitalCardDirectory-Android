@@ -14,39 +14,39 @@ import java.util.List;
 
 public class DataControllerBusinessCard {
 
-    public static final String DATABASE_NAME = "BusinessCard.db";
-    public static final int DATABASE_VERSION = 7;
+    private static final String DATABASE_NAME = "BusinessCard.db";
+    private static final int DATABASE_VERSION = 7;
 
-    public static final String FIRST_NAME = "FirstName";
-    public static final String LAST_NAME = "LastName";
-    public static final String EMAIL_ID = "EmailId";
-    public static final String PASSWORD = "Password";
-    public static final String TABLE_NAME_CUSTOMER = "Customer_Info";
-    public static final String TABLE_CREATE_CUSTOMER =
+    private static final String FIRST_NAME = "FirstName";
+    private static final String LAST_NAME = "LastName";
+    private static final String EMAIL_ID = "EmailId";
+    private static final String PASSWORD = "Password";
+    private static final String TABLE_NAME_CUSTOMER = "Customer_Info";
+    private static final String TABLE_CREATE_CUSTOMER =
             "create table Customer_Info (FirstName text not null, LastName text not null, " +
                     "EmailId text not null, Password text not null)";
 
     //logic to add business card information to the DB
-    public static final String TABLE_NAME_CONTACT = "Contact_Info";
-    public static final String CONTACT_ID = "ID";
-    public static final String CONTACT_NAME = "ContactName";
-    public static final String CONTACT_ORGANIZATION = "ContactOrganization";
-    public static final String CONTACT_EMAIL = "ContactEmail";
-    public static final String CONTACT_NUMBER = "ContactNumber";
-    public static final String USER_EMAIL = "UserEmail";
-    public static final String FILE_NAME = "FileName";
+    private static final String TABLE_NAME_CONTACT = "Contact_Info";
+    private static final String CONTACT_ID = "ID";
+    private static final String CONTACT_NAME = "ContactName";
+    private static final String CONTACT_ORGANIZATION = "ContactOrganization";
+    private static final String CONTACT_EMAIL = "ContactEmail";
+    private static final String CONTACT_NUMBER = "ContactNumber";
+    private static final String USER_EMAIL = "UserEmail";
+    private static final String FILE_NAME = "FileName";
     private static final String CONTACT_NOTES = "Notes";
 
 
-    public static final String TABLE_CREATE_CONTACT = "create table Contact_Info " +
+    private static final String TABLE_CREATE_CONTACT = "create table Contact_Info " +
             "(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
             "UserEmail text not null, ContactName text not null, " +
             "ContactOrganization text not null, ContactEmail text not null, " +
             "ContactNumber text not null, FileName text not null, Notes text)";
 
-    DataBaseHelper dbHelper;
-    Context context;
-    SQLiteDatabase db;
+    private DataBaseHelper dbHelper;
+    private Context context;
+    private SQLiteDatabase db;
 
     public DataControllerBusinessCard(Context context) {
         this.context = context;
@@ -89,15 +89,17 @@ public class DataControllerBusinessCard {
         db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         Card card = new Card();
-        if (cursor != null && cursor.moveToFirst()) {
-            card.setCardId(cursor.getInt(0));
-            card.setName(cursor.getString(cursor.getColumnIndex(CONTACT_NAME)));
-            card.setOrganization(cursor.getString(cursor.getColumnIndex(CONTACT_ORGANIZATION)));
-            card.setEmailId(cursor.getString(cursor.getColumnIndex(CONTACT_EMAIL)));
-            card.setPhoneNumber(cursor.getString(cursor.getColumnIndex(CONTACT_NUMBER)));
-            card.setNotes(cursor.getString(cursor.getColumnIndex(CONTACT_NOTES)));
-            card.setFileName(cursor.getString(cursor.getColumnIndex(FILE_NAME)));
-            cursor.moveToNext();
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                card.setCardId(cursor.getInt(0));
+                card.setName(cursor.getString(cursor.getColumnIndex(CONTACT_NAME)));
+                card.setOrganization(cursor.getString(cursor.getColumnIndex(CONTACT_ORGANIZATION)));
+                card.setEmailId(cursor.getString(cursor.getColumnIndex(CONTACT_EMAIL)));
+                card.setPhoneNumber(cursor.getString(cursor.getColumnIndex(CONTACT_NUMBER)));
+                card.setNotes(cursor.getString(cursor.getColumnIndex(CONTACT_NOTES)));
+                card.setFileName(cursor.getString(cursor.getColumnIndex(FILE_NAME)));
+            }
+            cursor.close();
         }
         return card;
     }
@@ -125,19 +127,19 @@ public class DataControllerBusinessCard {
                 card.setFileName(cursor.getString(cursor.getColumnIndex(FILE_NAME)));
                 cards.add(card);
             }
+            cursor.close();
         }
-        cursor.close();
         return cards;
     }
 
     /**
      * @param cardId Id of current Card
      * @param notes  new notes value
-     * @return true
+     * @return number of rows affected else -1 in case of exception
      */
     public int updateNotes(int cardId, String notes) {
         try {
-            String args[] = new String[]{String.valueOf(cardId)};
+            String[] args = new String[]{String.valueOf(cardId)};
             ContentValues newValues = new ContentValues();
             newValues.put(CONTACT_NOTES, notes);
             return db.update(TABLE_NAME_CONTACT, newValues, CONTACT_ID + "=?", args);
@@ -158,11 +160,13 @@ public class DataControllerBusinessCard {
         db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         String notes = "";
-        if (cursor != null && cursor.moveToFirst()) {
-            notes = cursor.getString(cursor.getColumnIndex(CONTACT_NOTES));
-            cursor.moveToNext();
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                notes = cursor.getString(cursor.getColumnIndex(CONTACT_NOTES));
+                cursor.moveToNext();
+            }
+            cursor.close();
         }
-        cursor.close();
         return notes;
     }
 
@@ -191,7 +195,7 @@ public class DataControllerBusinessCard {
     }
 
     public void deleteCard(int cardId) {
-        String args[] = new String[]{String.valueOf(cardId)};
+        String[] args = new String[]{String.valueOf(cardId)};
         db.delete(TABLE_NAME_CONTACT, CONTACT_ID + "=?", args);
     }
 
@@ -204,8 +208,8 @@ public class DataControllerBusinessCard {
 
         if (cursor != null && cursor.moveToFirst()) {
             existingEmailId = cursor.getString(2);
+            cursor.close();
         }
-        cursor.close();
         return existingEmailId;
     }
 
@@ -219,7 +223,7 @@ public class DataControllerBusinessCard {
 
     private static class DataBaseHelper extends SQLiteOpenHelper {
 
-        public DataBaseHelper(Context context) {
+        DataBaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
@@ -235,7 +239,6 @@ public class DataControllerBusinessCard {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            // TODO Auto-generated method stub
             db.execSQL("DROP TABLE IF EXISTS Customer_Info");
             db.execSQL("DROP TABLE IF EXISTS Contact_Info");
             onCreate(db);
