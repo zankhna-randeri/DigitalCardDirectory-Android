@@ -64,4 +64,6 @@
     <string name="txt_signup_progress">Registering User</string>
     <string name="txt_upload_progress">Uploading Card</string>
     <string name="txt_upload_success">Card Uploaded Successfully</string>
+    <string name="txt_card_save_success">Card Saved Successfully</string>
+    <string name="txt_err_no_img">Please Click or Select Card Image</string>
 </resources>

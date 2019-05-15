@@ -79,9 +79,10 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
 
     private String cardFilePath;
     private String appUserEmail;
-    private Uri cardImageUri;
+    private Uri cardImageUri = null;
     private String mCurrentPhotoPath;
 
+    private UploadCardTask uploadCardTask;
     private TransferUtility transferUtility;
 
     public AddCardFragment() {
@@ -150,20 +151,25 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_done) {
-            String fileName = getFileNameFromUri(cardImageUri);
-            Log.d(TAG, "onOptionsItemSelected : objectKey ---- " + fileName);
-            File file;
-            try {
-                file = createFileFromUri(cardImageUri, fileName);
-                String objectKey = appUserEmail + "/" + fileName;
-                upload(file, objectKey);
+            if (cardImageUri != null && uploadCardTask == null) {
+                String fileName = getFileNameFromUri(cardImageUri);
+                Log.d(TAG, "onOptionsItemSelected : objectKey ---- " + fileName);
+                File file;
+                try {
+                    file = createFileFromUri(cardImageUri, fileName);
+                    String objectKey = appUserEmail + "/" + fileName;
+                    upload(file, objectKey);
 
-                progress.setVisibility(View.VISIBLE);
-                txtProgressMsg.setText(getString(R.string.txt_upload_progress));
+                    progress.setVisibility(View.VISIBLE);
+                    txtProgressMsg.setText(getString(R.string.txt_upload_progress));
 
-            } catch (IOException e) {
-                Log.e(TAG, "onOptionsItemSelected: ", e);
-                Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                } catch (IOException e) {
+                    Log.e(TAG, "onOptionsItemSelected: ", e);
+                    Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Utility.getInstance().showMsg(getActivity().getApplicationContext(),
+                        getString(R.string.txt_err_no_img));
             }
             return true;
         }
@@ -246,7 +252,9 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
                 if (TransferState.COMPLETED.equals(state)) {
 //                    progress.setVisibility(View.GONE);
 //                    Toast.makeText(getActivity(), "Image uploaded", Toast.LENGTH_SHORT).show();
-                    new UploadCardTask(getActivity(), file.getName()).execute();
+                    uploadCardTask =
+                            new UploadCardTask(getActivity(), file.getName());
+                    uploadCardTask.execute();
                 }
             }
 
