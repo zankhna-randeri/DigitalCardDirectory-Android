@@ -189,9 +189,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 } else {
                     Utility.getInstance().showMsg(getApplicationContext(),
                             getString(R.string.signup_success_msg));
-                    Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                    startActivity(intent);
                     finish();
+                    Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 }
             }
             progress.setVisibility(View.GONE);

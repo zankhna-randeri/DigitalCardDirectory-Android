@@ -74,6 +74,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Button btnSubmit = findViewById(R.id.btn_login_submit);
         Button btnSignup = findViewById(R.id.btn_signup);
         setUpToolbar();
+        edtEmail.requestFocus();
         btnSubmit.setOnClickListener(this);
         btnSignup.setOnClickListener(this);
     }
@@ -130,41 +131,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             user.setEmailId(mailId);
             user.setPassword(pwd);
             new LoginTask(getApplicationContext(), user).execute();
-//            DataControllerBusinessCard dataController = new DataControllerBusinessCard(getBaseContext());
-//            dataController.open();
-//            Cursor cursor = dataController.validateLoginCredentials(mailId);
-//            if (cursor != null && cursor.moveToFirst()) {
-//                //cursor.moveToFirst();
-//                String dbMailId = cursor.getString(2);
-//                String dbPassword = cursor.getString(3);
-//                if (mailId.equalsIgnoreCase(dbMailId) && pwd.equalsIgnoreCase(dbPassword)) {
-//                    String firstName = cursor.getString(0);
-//                    String lastName = cursor.getString(1);
-//
-//                    //Set the email Id and first name and last name in shared preferences
-//                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-//                    SharedPreferences.Editor editor = sharedPreferences.edit();
-//                    editor.putString("Email_Id", dbMailId);
-//                    editor.putString("First_Name", firstName);
-//                    editor.putString("Last_Name", lastName);
-//                    editor.commit();
-//                    Intent intent = new Intent(this, NavigationActivity.class);
-//                    startActivity(intent);
-//
-//                } else {
-//                    Context context = getApplicationContext();
-//                    CharSequence text = getString(R.string.login_validation);
-//                    int duration = Toast.LENGTH_LONG;
-//                    Toast.makeText(context, text, duration).show();
-//                }
-//            } else {
-//                Context context = getApplicationContext();
-//                CharSequence text = getString(R.string.no_customer_record);
-//                int duration = Toast.LENGTH_LONG;
-//                Toast.makeText(context, text, duration).show();
-//            }
-//            cursor.close();
-//            dataController.close();
         }
 
 

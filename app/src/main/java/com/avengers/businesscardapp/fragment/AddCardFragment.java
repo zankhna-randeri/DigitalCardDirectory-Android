@@ -12,7 +12,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
@@ -188,7 +187,6 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.btn_photos:
                 handlePhotosClick();
-                openPhotos();
                 break;
         }
     }
@@ -233,7 +231,7 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
         if (getActivity() != null) {
             CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
                     getActivity().getApplicationContext(),
-                    Constants.COGNITO_POOL_ID,
+                    Constants.AWS_COGNITO_POOL_ID,
                     Regions.US_WEST_2
             );
             AmazonS3Client s3Client = new AmazonS3Client(credentialsProvider);
@@ -292,7 +290,7 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
 //        cardImage.setImageBitmap(photo);
 //        Uri tempUri = getImageUri(getActivity().getApplicationContext(), photo);
         cardImageUri = getImageUri(getActivity().getApplicationContext(), photo);
-        cardImage.setImageURI(cardImageUri);
+//        cardImage.setImageURI(cardImageUri);
         cardFilePath = getRealPathFromURI(cardImageUri);
         Log.d(TAG, "handleCameraResponse: " + getRealPathFromURI(cardImageUri));
 
@@ -523,7 +521,6 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
             if (NetworkHelper.hasNetworkAccess(mContext)) {
                 BusinessCardWebservice webservice = BusinessCardWebservice
                         .retrofit.create(BusinessCardWebservice.class);
-//                Call<UploadCardResponse> call = webservice.uploadCard(filePart, email);
                 Call<UploadCardResponse> call = webservice.uploadCard(fileName, appUserEmail);
                 try {
                     return call.execute().body();
