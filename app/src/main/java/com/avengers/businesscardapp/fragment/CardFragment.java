@@ -82,7 +82,7 @@ public class CardFragment extends Fragment {
                 .into(imgCard);
     }
 
-    private class DisplayCardTask extends AsyncTask<Void, String, String> {
+    private class DisplayCardTask extends AsyncTask<Void, Void, String> {
 
         private Context mContext;
 

@@ -136,7 +136,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    private class LoginTask extends AsyncTask<Void, LoginResponse, LoginResponse> {
+    private class LoginTask extends AsyncTask<Void, Void, LoginResponse> {
 
         private Context mContext;
         private LoginUser user;

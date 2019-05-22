@@ -259,7 +259,7 @@ public class CardDetailActivity extends AppCompatActivity implements
         dialog.show();
     }
 
-    private class ReferCardTask extends AsyncTask<Void, String, String> {
+    private class ReferCardTask extends AsyncTask<Void, Void, String> {
 
         private Context mContext;
         private String toEmail;

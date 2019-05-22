@@ -18,7 +18,6 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.avengers.businesscardapp.db.DataControllerBusinessCard;
 import com.avengers.businesscardapp.dto.UploadCardResponse;

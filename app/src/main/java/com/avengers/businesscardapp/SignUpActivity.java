@@ -149,7 +149,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         finish();
     }
 
-    private class SignUpTask extends AsyncTask<Void, GenericResponse, GenericResponse> {
+    private class SignUpTask extends AsyncTask<Void, Void, GenericResponse> {
 
         private Context mContext;
         private SignUpUser user;

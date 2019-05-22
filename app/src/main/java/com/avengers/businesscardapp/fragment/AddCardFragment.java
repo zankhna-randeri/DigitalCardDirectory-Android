@@ -495,7 +495,7 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
                 REQUEST_BROWSE_IMAGE);
     }
 
-    private class UploadCardTask extends AsyncTask<Void, UploadCardResponse, UploadCardResponse> {
+    private class UploadCardTask extends AsyncTask<Void, Void, UploadCardResponse> {
 
         private Context mContext;
         private String fileName;
