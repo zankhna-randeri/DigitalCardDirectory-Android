@@ -25,3 +25,6 @@ Digital Card Directory is a mobile application developed for Android devices to 
 2. gson-converter – 2.5.0 : It is used to convert API's JSON response
 3. Fabric Crashlytics - 2.10.0 : It is used for real-time crash reporting
 4. Picasso - 2.7 - It is used to load image from URL
+
+## Demo
+[Link](https://youtu.be/NnEHQ-F3Yxk)
