@@ -14,23 +14,33 @@ Digital Card Directory is a mobile application developed for Android devices to 
 -	Search the card in directory.
 -	User can also share the Relevant Business Card among the their connections.
 
-## SDK Build Version
+## Application Features
+- Material Design : Application UI controls are designed based on material design
+- Retrofit : It is a type-safe HTTP client to handle API response
+- Picasso: Open source library to load image from URL
+- Crashlytics: Real time crash report tool.
 
+## SDK Build Version
 - Compile SDK version – 28  
 - Target SDK version – 28  
 - Min SDK version - 19  
 
 ## Opensource libraries integrated
-1. Retrofit – 2.5.0 : Backend APIs were consumed using Retrofit
-2. gson-converter – 2.5.0 : It is used to convert API's JSON response
-3. Fabric Crashlytics - 2.10.0 : It is used for real-time crash reporting
-4. Picasso - 2.7 - It is used to load image from URL
+1. Retrofit – 2.5.0
+2. gson-converter – 2.5.0
+3. Fabric Crashlytics - 2.10.0
+4. Picasso - 2.7
+
+## Fabric Carshlytics portal
+Crashyltics portal displaying real-time crash report
+![fab1](https://user-images.githubusercontent.com/42704669/63624340-ed708100-c5b0-11e9-91b6-69b88fbb5612.png)
+![fab2](https://user-images.githubusercontent.com/42704669/63624342-ef3a4480-c5b0-11e9-9bf1-96947c4a4974.png)
 
 ## Demo
 [Link](https://youtu.be/NnEHQ-F3Yxk)
 
 ## Application Flow Diagram
-![flow_diagram](https://user-images.githubusercontent.com/42704669/63615339-fa35aa80-c599-11e9-93ad-986f9b2db805.png)
+![flow_diagram](https://user-images.githubusercontent.com/42704669/63624041-104e6580-c5b0-11e9-869d-c49205f0aa63.png)
 
 ## Architecture Diagram
 ![arch_diagram](https://user-images.githubusercontent.com/42704669/63615411-218c7780-c59a-11e9-9b6a-feb165ef5728.png)
