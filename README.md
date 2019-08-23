@@ -1,7 +1,5 @@
 # Digital Card Directory
 
-## Introduction
-
 Digital Card Directory is a mobile application developed for Android devices to manage business card/visiting cards in a mobile application. It provides following functionalities:
 - Allows users to Signup and Login into the mobile Application.
 -	The user can click business card image through camera or device gallery(Photos) and upload that on server for further text extraction and Entity recognition.
