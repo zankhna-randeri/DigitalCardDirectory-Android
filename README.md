@@ -52,7 +52,7 @@ Digital Card Directory is a mobile application developed for Android devices to 
 #### Add Card
 ![6 copy](https://user-images.githubusercontent.com/42704669/63616023-809ebc00-c59b-11e9-8380-a876f898504c.png)
 
-#### Modify Card
+#### Automatically scanned card details.
 ![7 copy](https://user-images.githubusercontent.com/42704669/63616024-809ebc00-c59b-11e9-835f-6bee10f7031e.png)
 
 #### Card Detail - Call/Email contact
