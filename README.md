@@ -5,18 +5,19 @@ Digital Card Directory is a mobile application developed for Android devices to 
 -	The user can click business card image through camera or device gallery(Photos) and upload that on server for further text extraction and Entity recognition.
 - The mobile application will store all the extracted details of that card in the SQLite database enabling the user to access it later which eliminates the manual process of storing and managing the business cards.
 -	User can view uploaded card through application and perform operations such as
-    1. Place phone call and send mail
-    2. View card image
-    3. Add Comments
--	Delete already uploaded Cards.
+    1. Make a phone call
+    2. Send email.
+    3. View card image.
+    4. Add details/comments.
+-	Delete already uploaded cards.
 -	Search the card in directory.
--	User can also share the Relevant Business Card among the their connections.
+-	User can also share the relevant business card among the their connections.
 
 ## Application Features
-- Material Design : Application UI controls are designed based on material design
-- Retrofit : It is a type-safe HTTP client to handle API response
-- Picasso: Open source library to load image from URL
-- Crashlytics: Real time crash report tool.
+- Material Design : Application UI controls are designed with material design component.
+- Retrofit : It is a type-safe HTTP client to handle API response.
+- Picasso: Open source library to load image from URL.
+- Firebase Crashlytics: Real time crash reporting tool.
 
 ## SDK Build Version
 - Compile SDK version – 28  
@@ -24,10 +25,10 @@ Digital Card Directory is a mobile application developed for Android devices to 
 - Min SDK version - 19  
 
 ## Opensource libraries integrated
-1. Retrofit – 2.5.0
-2. gson-converter – 2.5.0
-3. Fabric Crashlytics - 2.10.0
-4. Picasso - 2.7
+1. Retrofit 2.5.0
+2. gson-converter 2.5.0
+3. Fabric Crashlytics 2.10.0
+4. Picasso 2.7
 
 ## Fabric Carshlytics portal
 Crashyltics portal displaying real-time crash report
